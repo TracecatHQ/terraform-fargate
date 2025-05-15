@@ -44,8 +44,6 @@ module "ecs" {
   temporal_ui_image                        = var.temporal_ui_image
   temporal_ui_image_tag                    = var.temporal_ui_image_tag
   force_new_deployment                     = var.force_new_deployment
-  use_git_commit_sha                       = var.use_git_commit_sha
-  TFC_CONFIGURATION_VERSION_GIT_COMMIT_SHA = var.TFC_CONFIGURATION_VERSION_GIT_COMMIT_SHA
 
   # Temporal configuration
   disable_temporal_ui        = var.disable_temporal_ui

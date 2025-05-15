@@ -120,18 +120,6 @@ variable "force_new_deployment" {
   default     = false
 }
 
-variable "use_git_commit_sha" {
-  type        = bool
-  description = "Use the git commit SHA as the image tag"
-  default     = false
-}
-
-variable "TFC_CONFIGURATION_VERSION_GIT_COMMIT_SHA" {
-  description = "Terraform Cloud only: the git commit SHA of that triggered the run"
-  type        = string
-  default     = null
-}
-
 ### Temporal configuration
 
 variable "disable_temporal_ui" {
