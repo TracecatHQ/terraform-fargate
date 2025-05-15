@@ -8,7 +8,7 @@ locals {
 }
 
 module "network" {
-  source = "modules/network"
+  source = "./modules/network"
 
   aws_region     = var.aws_region
   aws_role_arn   = local.aws_role_arn
@@ -17,7 +17,7 @@ module "network" {
 }
 
 module "ecs" {
-  source = "modules/ecs"
+  source = "./modules/ecs"
 
   # AWS provider
   aws_region   = var.aws_region
