@@ -99,7 +99,7 @@ resource "aws_ecs_service" "tracecat_api" {
 
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
-    weight            = 1
+    weight            = 2
     base              = 0
   }
 
