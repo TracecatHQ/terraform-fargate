@@ -80,6 +80,7 @@ variable "auth_allowed_domains" {
 variable "auth_superadmin_email" {
   type        = string
   description = "Email address of the superadmin user for Tracecat authentication"
+  default     = null
 }
 
 ### Images and Versions
