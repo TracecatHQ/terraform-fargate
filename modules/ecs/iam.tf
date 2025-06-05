@@ -176,6 +176,12 @@ resource "aws_iam_role_policy_attachment" "ui_execution_ecs_poll" {
   role       = aws_iam_role.ui_execution.name
 }
 
+# Add this new attachment for secrets access
+resource "aws_iam_role_policy_attachment" "ui_execution_secrets" {
+  policy_arn = aws_iam_policy.secrets_access.arn
+  role       = aws_iam_role.ui_execution.name
+}
+
 # Temporal execution role
 resource "aws_iam_role" "temporal_execution" {
   count              = var.disable_temporal_autosetup ? 0 : 1

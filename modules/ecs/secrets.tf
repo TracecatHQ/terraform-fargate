@@ -174,6 +174,13 @@ locals {
     local.saml_idp_metadata_url_secret
   )
 
+  tracecat_ui_secrets = [
+    {
+      name      = "TRACECAT__SIGNING_SECRET"
+      valueFrom = data.aws_secretsmanager_secret_version.tracecat_signing_secret.arn
+    }
+  ]
+
   temporal_secrets = var.disable_temporal_autosetup ? [] : [
     {
       name      = "POSTGRES_PWD"
