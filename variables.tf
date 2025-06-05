@@ -36,13 +36,16 @@ variable "auth_types" {
   default = "google_oauth,saml"
 }
 
-
 variable "auth_allowed_domains" {
   type        = string
   description = "Comma separated list of allowed domains for authentication (e.g. `acme.com,acme.ai`)"
   default     = null
 }
 
+variable "auth_superadmin_email" {
+  type        = string
+  description = "Email address of the superadmin user for Tracecat authentication"
+}
 
 ### Images and Versions
 

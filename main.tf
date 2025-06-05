@@ -73,6 +73,7 @@ module "ecs" {
   # Authentication
   auth_types                            = var.auth_types
   auth_allowed_domains                  = var.auth_allowed_domains
+  auth_superadmin_email                 = var.auth_superadmin_email
 
   # OAuth
   oauth_client_id_arn     = var.oauth_client_id_arn

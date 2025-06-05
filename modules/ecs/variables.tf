@@ -77,6 +77,11 @@ variable "auth_allowed_domains" {
   default     = null
 }
 
+variable "auth_superadmin_email" {
+  type        = string
+  description = "Email address of the superadmin user for Tracecat authentication"
+}
+
 ### Images and Versions
 
 variable "tracecat_image" {

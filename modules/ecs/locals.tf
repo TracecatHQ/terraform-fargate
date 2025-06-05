@@ -40,6 +40,7 @@ locals {
       TRACECAT__API_URL                               = local.internal_api_url
       TRACECAT__APP_ENV                               = var.tracecat_app_env
       TRACECAT__AUTH_ALLOWED_DOMAINS                  = var.auth_allowed_domains
+      TRACECAT__AUTH_SUPERADMIN_EMAIL                 = var.auth_superadmin_email
       TRACECAT__AUTH_TYPES                            = var.auth_types
       TRACECAT__DB_ENDPOINT                           = local.core_db_hostname
       TRACECAT__EXECUTOR_URL                          = local.internal_executor_url
