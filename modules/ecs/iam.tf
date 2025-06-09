@@ -59,6 +59,24 @@ resource "aws_iam_policy" "secrets_access" {
   depends_on = [aws_db_instance.core_database]
 }
 
+resource "aws_iam_policy" "ui_secrets_access" {
+  name        = "TracecatUISecretsAccessPolicy"
+  description = "Policy for accessing Tracecat UI secrets"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = ["secretsmanager:GetSecretValue"]
+        Resource = compact([
+          var.tracecat_service_key_arn,
+        ])
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "task_secrets_access" {
   # Enable this policy if temporal autosetup is disabled
   count       = var.disable_temporal_autosetup ? 1 : 0
@@ -178,7 +196,7 @@ resource "aws_iam_role_policy_attachment" "ui_execution_ecs_poll" {
 
 # Add this new attachment for secrets access
 resource "aws_iam_role_policy_attachment" "ui_execution_secrets" {
-  policy_arn = aws_iam_policy.secrets_access.arn
+  policy_arn = aws_iam_policy.ui_secrets_access.arn
   role       = aws_iam_role.ui_execution.name
 }
 

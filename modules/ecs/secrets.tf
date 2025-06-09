@@ -176,8 +176,8 @@ locals {
 
   tracecat_ui_secrets = [
     {
-      name      = "TRACECAT__SIGNING_SECRET"
-      valueFrom = data.aws_secretsmanager_secret_version.tracecat_signing_secret.arn
+      name      = "TRACECAT__SERVICE_KEY"
+      valueFrom = data.aws_secretsmanager_secret_version.tracecat_service_key.arn
     }
   ]
 
