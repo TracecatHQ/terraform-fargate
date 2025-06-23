@@ -65,6 +65,7 @@ locals {
       TRACECAT__EXECUTOR_CLIENT_TIMEOUT = var.executor_client_timeout
       TRACECAT__EXECUTOR_URL            = local.internal_executor_url
       TRACECAT__PUBLIC_API_URL          = local.public_api_url
+      TEMPORAL__METRICS_PORT            = var.enable_metrics ? 9000 : null
       SENTRY_DSN                        = var.sentry_dsn
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
