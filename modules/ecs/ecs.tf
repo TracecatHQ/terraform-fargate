@@ -14,7 +14,7 @@ resource "aws_ecs_cluster" "tracecat_cluster" {
   # Enable Container Insights
   setting {
     name  = "containerInsights"
-    value = "enabled"
+    value = "enhanced"
   }
 }
 
