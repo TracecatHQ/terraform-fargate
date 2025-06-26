@@ -53,9 +53,11 @@ module "ecs" {
   temporal_namespace         = var.temporal_namespace
 
   # Container environment variables
-  tracecat_app_env   = var.tracecat_app_env
-  log_level          = var.log_level
-  temporal_log_level = var.temporal_log_level
+  tracecat_app_env                         = var.tracecat_app_env
+  log_level                                = var.log_level
+  temporal_log_level                       = var.temporal_log_level
+  context_compression_enabled     = var.context_compression_enabled
+  context_compression_threshold_kb = var.context_compression_threshold_kb
 
   # RDS settings
   restore_from_snapshot       = var.restore_from_snapshot

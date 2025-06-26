@@ -145,6 +145,20 @@ variable "temporal_log_level" {
   default = "warn"
 }
 
+### Context Compression Configuration
+
+variable "context_compression_enabled" {
+  type        = bool
+  description = "Enable compression of large action results in workflow contexts"
+  default     = false
+}
+
+variable "context_compression_threshold_kb" {
+  type        = number
+  description = "Threshold in KB above which action results are compressed"
+  default     = 16
+}
+
 ### Secret ARNs
 
 variable "tracecat_db_encryption_key_arn" {

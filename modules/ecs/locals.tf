@@ -46,6 +46,8 @@ locals {
       TRACECAT__EXECUTOR_URL                          = local.internal_executor_url
       TRACECAT__PUBLIC_API_URL                        = local.public_api_url
       TRACECAT__PUBLIC_APP_URL                        = local.public_app_url
+      TRACECAT__CONTEXT_COMPRESSION_ENABLED           = var.context_compression_enabled
+      TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB      = var.context_compression_threshold_kb
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
   ]
@@ -67,6 +69,8 @@ locals {
       TRACECAT__PUBLIC_API_URL          = local.public_api_url
       TEMPORAL__METRICS_PORT            = var.enable_metrics ? 9000 : null
       SENTRY_DSN                        = var.sentry_dsn
+      TRACECAT__CONTEXT_COMPRESSION_ENABLED      = var.context_compression_enabled
+      TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
   ]
@@ -76,6 +80,8 @@ locals {
       LOG_LEVEL                                = var.log_level
       TRACECAT__APP_ENV                        = var.tracecat_app_env
       TRACECAT__DB_ENDPOINT                    = local.core_db_hostname
+      TRACECAT__CONTEXT_COMPRESSION_ENABLED      = var.context_compression_enabled
+      TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
   ]
