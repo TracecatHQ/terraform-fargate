@@ -82,6 +82,7 @@ locals {
       TRACECAT__DB_ENDPOINT                    = local.core_db_hostname
       TRACECAT__CONTEXT_COMPRESSION_ENABLED      = var.context_compression_enabled
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
+      TRACECAT__EXECUTOR_PAYLOAD_MAX_SIZE_BYTES  = var.executor_payload_max_size_bytes
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
   ]

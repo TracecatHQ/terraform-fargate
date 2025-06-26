@@ -100,6 +100,7 @@ module "ecs" {
   executor_cpu                = var.executor_cpu
   executor_memory             = var.executor_memory
   executor_client_timeout     = var.executor_client_timeout
+  executor_payload_max_size_bytes = var.executor_payload_max_size_bytes
   ui_cpu                      = var.ui_cpu
   ui_memory                   = var.ui_memory
   temporal_cpu                = var.temporal_cpu
