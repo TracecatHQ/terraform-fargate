@@ -268,6 +268,12 @@ variable "worker_memory" {
   default = "4096"
 }
 
+variable "worker_desired_count" {
+  type        = number
+  description = "Desired number of worker instances to run"
+  default     = 2
+}
+
 variable "executor_cpu" {
   type    = string
   default = "8192"
