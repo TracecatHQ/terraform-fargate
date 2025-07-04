@@ -40,6 +40,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "tracecat" {
   rule {
     id     = "blob_storage_lifecycle"
     status = "Enabled"
+    
+    # Apply to all objects in the bucket
+    filter {}
 
     # Transition to IA after 30 days
     transition {
@@ -95,8 +98,9 @@ resource "aws_s3_bucket_policy" "tracecat" {
         Effect    = "Allow"
         Principal = {
           AWS = [
-            aws_iam_role.ecs_task_role.arn,
-            aws_iam_role.ecs_execution_role.arn
+            aws_iam_role.api_worker_task.arn,
+            aws_iam_role.api_execution.arn,
+            aws_iam_role.worker_execution.arn
           ]
         }
         Action = [

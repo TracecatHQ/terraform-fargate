@@ -92,7 +92,7 @@ resource "aws_iam_policy" "s3_attachments_access" {
             "s3:ExistingObjectTag/AccessControlled" = "true"
           }
           StringLike = {
-            "aws:userid" = "${aws_iam_role.ecs_task_role.unique_id}:*"
+            "aws:userid" = "${aws_iam_role.api_worker_task.unique_id}:*"
           }
         }
       }
