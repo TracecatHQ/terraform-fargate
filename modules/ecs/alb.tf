@@ -101,6 +101,21 @@ resource "aws_wafv2_web_acl" "this" {
           }
         }
 
+        # Override rules that commonly cause false positives with file uploads
+        rule_action_override {
+          name = "CrossSiteScripting_BODY"
+          action_to_use {
+            count {}
+          }
+        }
+
+        rule_action_override {
+          name = "GenericLFI_BODY"
+          action_to_use {
+            count {}
+          }
+        }
+
       }
     }
 
@@ -203,10 +218,109 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
+  # Custom rule to block XSS threats except for attachment uploads
+  rule {
+    name     = "BlockXSSExceptAttachments"
+    priority = 6
+
+    action {
+      block {}
+    }
+
+    statement {
+      and_statement {
+        statement {
+          label_match_statement {
+            scope = "LABEL"
+            key   = "awswaf:managed:aws:core-rule-set:CrossSiteScripting_Body"
+          }
+        }
+        statement {
+          not_statement {
+            statement {
+              regex_pattern_set_reference_statement {
+                arn = aws_wafv2_regex_pattern_set.attachments_endpoint[0].arn
+                field_to_match {
+                  uri_path {}
+                }
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "BlockXSSExceptAttachments"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # Custom rule to block LFI threats except for attachment uploads
+  rule {
+    name     = "BlockLFIExceptAttachments"
+    priority = 7
+
+    action {
+      block {}
+    }
+
+    statement {
+      and_statement {
+        statement {
+          label_match_statement {
+            scope = "LABEL"
+            key   = "awswaf:managed:aws:core-rule-set:GenericLFI_Body"
+          }
+        }
+        statement {
+          not_statement {
+            statement {
+              regex_pattern_set_reference_statement {
+                arn = aws_wafv2_regex_pattern_set.attachments_endpoint[0].arn
+                field_to_match {
+                  uri_path {}
+                }
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "BlockLFIExceptAttachments"
+      sampled_requests_enabled   = true
+    }
+  }
+
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "tracecat-waf-metric"
     sampled_requests_enabled   = true
+  }
+}
+
+# Regex pattern set for attachments endpoint
+resource "aws_wafv2_regex_pattern_set" "attachments_endpoint" {
+  count = var.enable_waf ? 1 : 0
+
+  name        = "attachments-endpoint-pattern"
+  description = "Pattern to match attachments API endpoint"
+  scope       = "REGIONAL"
+
+  regular_expression {
+    regex_string = "^/api/cases/[a-fA-F0-9-]+/attachments(\\?.*)?$"
   }
 }
 
