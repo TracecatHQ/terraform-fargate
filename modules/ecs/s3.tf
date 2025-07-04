@@ -76,38 +76,18 @@ resource "aws_s3_bucket_policy" "tracecat" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid       = "AllowPresignedURLAccess"
-        Effect    = "Allow"
-        Principal = "*"
-        Action    = "s3:GetObject"
-        Resource  = "${aws_s3_bucket.tracecat.arn}/*"
-        Condition = {
-          StringEquals = {
-            "s3:ExistingObjectTag/AccessControlled" = "true"
-          }
-          StringLike = {
-            "aws:UserAgent" = "Tracecat/*"
-          }
-          NumericLessThan = {
-            "s3:signatureAge" = "30"
-          }
-        }
-      },
-      {
         Sid       = "AllowECSTaskAccess"
         Effect    = "Allow"
         Principal = {
-          AWS = [
-            aws_iam_role.api_worker_task.arn,
-            aws_iam_role.api_execution.arn,
-            aws_iam_role.worker_execution.arn
-          ]
+          AWS = aws_iam_role.api_worker_task.arn
         }
         Action = [
           "s3:GetObject",
           "s3:PutObject",
           "s3:DeleteObject",
-          "s3:PutObjectTagging"
+          "s3:PutObjectTagging",
+          "s3:GetObjectTagging",
+          "s3:ListBucket"
         ]
         Resource = [
           "${aws_s3_bucket.tracecat.arn}/*",
@@ -117,7 +97,9 @@ resource "aws_s3_bucket_policy" "tracecat" {
       {
         Sid       = "DenyInsecureConnections"
         Effect    = "Deny"
-        Principal = "*"
+        Principal = {
+          AWS = aws_iam_role.api_worker_task.arn
+        }
         Action    = "s3:*"
         Resource = [
           aws_s3_bucket.tracecat.arn,
