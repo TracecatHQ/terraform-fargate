@@ -121,7 +121,7 @@ resource "aws_s3_bucket_cors_configuration" "tracecat" {
 
   cors_rule {
     allowed_headers = ["*"]
-    allowed_methods = ["GET", "HEAD"]
+    allowed_methods = ["GET", "HEAD", "POST", "PUT", "DELETE"]
     allowed_origins = ["https://${var.domain_name}"]
     expose_headers  = ["ETag", "Content-Type", "Content-Length", "Content-Disposition"]
     max_age_seconds = 3600
