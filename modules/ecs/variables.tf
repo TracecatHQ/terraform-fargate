@@ -34,6 +34,11 @@ variable "private_subnet_ids" {
   description = "The IDs of the private subnets"
 }
 
+variable "private_route_table_ids" {
+  type        = list(string)
+  description = "The IDs of the private route tables"
+}
+
 variable "allowed_inbound_cidr_blocks" {
   description = "List of CIDR blocks allowed to access the ALB"
   type        = list(string)

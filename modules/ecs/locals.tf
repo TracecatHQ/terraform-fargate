@@ -48,6 +48,9 @@ locals {
       TRACECAT__PUBLIC_APP_URL                        = local.public_app_url
       TRACECAT__CONTEXT_COMPRESSION_ENABLED           = var.context_compression_enabled
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB      = var.context_compression_threshold_kb
+      TRACECAT__BLOB_STORAGE_PROTOCOL                 = "s3"
+      TRACECAT__BLOB_STORAGE_BUCKET                   = "tracecat"
+      TRACECAT__BLOB_STORAGE_PRESIGNED_URL_ENDPOINT   = local.public_api_url
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
   ]

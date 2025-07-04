@@ -33,6 +33,73 @@ resource "aws_iam_policy" "ecs_poll" {
 }
 
 
+# S3 access policy for blob storage
+resource "aws_iam_policy" "s3_attachments_access" {
+  name        = "TracecatS3BlobStoragePolicy"
+  description = "Policy for S3 blob storage access with security restrictions"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowBlobStorageOperations"
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:PutObjectTagging",
+          "s3:GetObjectTagging",
+          "s3:HeadObject"
+        ]
+        Resource = [
+          "${aws_s3_bucket.tracecat.arn}/*"
+        ]
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-server-side-encryption" = "AES256"
+          }
+        }
+      },
+      {
+        Sid    = "AllowBucketOperations"
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:HeadBucket"
+        ]
+        Resource = [
+          aws_s3_bucket.tracecat.arn
+        ]
+        Condition = {
+          StringLike = {
+            "s3:prefix" = ["*"]
+          }
+        }
+      },
+      {
+        Sid    = "AllowPresignedURLGeneration" 
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject"
+        ]
+        Resource = [
+          "${aws_s3_bucket.tracecat.arn}/*"
+        ]
+        Condition = {
+          StringEquals = {
+            "s3:ExistingObjectTag/AccessControlled" = "true"
+          }
+          StringLike = {
+            "aws:userid" = "${aws_iam_role.ecs_task_role.unique_id}:*"
+          }
+        }
+      }
+    ]
+  })
+}
+
 # Secrets access policy
 resource "aws_iam_policy" "secrets_access" {
   name        = "TracecatSecretsAccessPolicy"
@@ -176,6 +243,12 @@ resource "aws_iam_role_policy" "api_worker_task_db_access" {
     ]
   })
 }
+# Attach S3 policy to API/Worker task role
+resource "aws_iam_role_policy_attachment" "api_worker_task_s3" {
+  policy_arn = aws_iam_policy.s3_attachments_access.arn
+  role       = aws_iam_role.api_worker_task.name
+}
+
 resource "aws_iam_role_policy_attachment" "api_worker_task_secrets" {
   # Enable this policy if temporal autosetup is disabled
   count      = var.disable_temporal_autosetup ? 1 : 0

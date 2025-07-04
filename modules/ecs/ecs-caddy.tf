@@ -32,7 +32,12 @@ resource "aws_ecs_task_definition" "caddy_task_definition" {
 cat > /etc/caddy/Caddyfile <<'BASECONFIG'
 :80 {
   handle_path /api* {
-    reverse_proxy http://api-service:8000
+    reverse_proxy http://api-service:8000 {
+      header_up X-Forwarded-For {remote_host}
+      header_up X-Real-IP {remote_host}
+      header_up X-Forwarded-Proto {scheme}
+      header_up X-Forwarded-Host {host}
+    }
   }
   handle_path /temporal-admin* {
     reverse_proxy http://temporal-ui-service:8080
