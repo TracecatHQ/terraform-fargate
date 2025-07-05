@@ -1,11 +1,33 @@
-# S3 bucket for Tracecat blob storage with security hardening
-resource "aws_s3_bucket" "tracecat" {
-  bucket = "tracecat"
+resource "random_uuid" "attachments_bucket_guid" {
+}
+
+# Future bucket examples (when needed):
+# resource "random_uuid" "audit_logs_bucket_guid" {}
+# resource "aws_s3_bucket" "audit_logs" {
+#   bucket = "tracecat-audit-logs-${var.tracecat_app_env}-${replace(random_uuid.audit_logs_bucket_guid.result, "-", "")}"
+# }
+#
+# resource "random_uuid" "backups_bucket_guid" {}
+# resource "aws_s3_bucket" "backups" {
+#   bucket = "tracecat-backups-${var.tracecat_app_env}-${replace(random_uuid.backups_bucket_guid.result, "-", "")}"
+# }
+
+# S3 bucket for Tracecat case attachments
+resource "aws_s3_bucket" "attachments" {
+  bucket = "tracecat-attachments-${var.tracecat_app_env}-${replace(random_uuid.attachments_bucket_guid.result, "-", "")}"
+
+  tags = {
+    Name        = "Tracecat attachments storage"
+    Environment = var.tracecat_app_env
+    Service     = "tracecat"
+    Purpose     = "attachments"
+    ManagedBy   = "terraform"
+  }
 }
 
 # Block public access completely
-resource "aws_s3_bucket_public_access_block" "tracecat" {
-  bucket = aws_s3_bucket.tracecat.id
+resource "aws_s3_bucket_public_access_block" "attachments" {
+  bucket = aws_s3_bucket.attachments.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -14,16 +36,16 @@ resource "aws_s3_bucket_public_access_block" "tracecat" {
 }
 
 # Enable versioning for data protection
-resource "aws_s3_bucket_versioning" "tracecat" {
-  bucket = aws_s3_bucket.tracecat.id
+resource "aws_s3_bucket_versioning" "attachments" {
+  bucket = aws_s3_bucket.attachments.id
   versioning_configuration {
     status = "Enabled"
   }
 }
 
 # Server-side encryption
-resource "aws_s3_bucket_server_side_encryption_configuration" "tracecat" {
-  bucket = aws_s3_bucket.tracecat.id
+resource "aws_s3_bucket_server_side_encryption_configuration" "attachments" {
+  bucket = aws_s3_bucket.attachments.id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -34,11 +56,11 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "tracecat" {
 }
 
 # Lifecycle policy for cost optimization
-resource "aws_s3_bucket_lifecycle_configuration" "tracecat" {
-  bucket = aws_s3_bucket.tracecat.id
+resource "aws_s3_bucket_lifecycle_configuration" "attachments" {
+  bucket = aws_s3_bucket.attachments.id
 
   rule {
-    id     = "blob_storage_lifecycle"
+    id     = "attachments_lifecycle"
     status = "Enabled"
     
     # Apply to all objects in the bucket
@@ -69,8 +91,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "tracecat" {
 }
 
 # Bucket policy for secure access
-resource "aws_s3_bucket_policy" "tracecat" {
-  bucket = aws_s3_bucket.tracecat.id
+resource "aws_s3_bucket_policy" "attachments" {
+  bucket = aws_s3_bucket.attachments.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -90,8 +112,8 @@ resource "aws_s3_bucket_policy" "tracecat" {
           "s3:ListBucket"
         ]
         Resource = [
-          "${aws_s3_bucket.tracecat.arn}/*",
-          aws_s3_bucket.tracecat.arn
+          "${aws_s3_bucket.attachments.arn}/*",
+          aws_s3_bucket.attachments.arn
         ]
       },
       {
@@ -102,8 +124,8 @@ resource "aws_s3_bucket_policy" "tracecat" {
         }
         Action    = "s3:*"
         Resource = [
-          aws_s3_bucket.tracecat.arn,
-          "${aws_s3_bucket.tracecat.arn}/*"
+          aws_s3_bucket.attachments.arn,
+          "${aws_s3_bucket.attachments.arn}/*"
         ]
         Condition = {
           Bool = {
@@ -116,8 +138,8 @@ resource "aws_s3_bucket_policy" "tracecat" {
 }
 
 # CORS configuration for case attachments
-resource "aws_s3_bucket_cors_configuration" "tracecat" {
-  bucket = aws_s3_bucket.tracecat.id
+resource "aws_s3_bucket_cors_configuration" "attachments" {
+  bucket = aws_s3_bucket.attachments.id
 
   cors_rule {
     allowed_headers = ["*"]

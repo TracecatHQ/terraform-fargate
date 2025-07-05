@@ -53,7 +53,7 @@ resource "aws_iam_policy" "s3_attachments_access" {
           "s3:HeadObject"
         ]
         Resource = [
-          "${aws_s3_bucket.tracecat.arn}/*"
+          "${aws_s3_bucket.attachments.arn}/*"
         ]
         Condition = {
           StringEquals = {
@@ -70,7 +70,7 @@ resource "aws_iam_policy" "s3_attachments_access" {
           "s3:HeadBucket"
         ]
         Resource = [
-          aws_s3_bucket.tracecat.arn
+          aws_s3_bucket.attachments.arn
         ]
         Condition = {
           StringLike = {
@@ -85,7 +85,7 @@ resource "aws_iam_policy" "s3_attachments_access" {
           "s3:GetObject"
         ]
         Resource = [
-          "${aws_s3_bucket.tracecat.arn}/*"
+          "${aws_s3_bucket.attachments.arn}/*"
         ]
         Condition = {
           StringEquals = {

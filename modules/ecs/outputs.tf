@@ -39,3 +39,13 @@ output "latest_temporal_snapshot_encrypted" {
   value       = var.restore_from_snapshot ? data.aws_db_snapshot.temporal_snapshots[0].encrypted : null
   description = "Whether the latest temporal database snapshot is encrypted"
 }
+
+output "s3_attachments_bucket_name" {
+  value       = aws_s3_bucket.attachments.bucket
+  description = "The name of the S3 bucket used for attachments storage"
+}
+
+output "s3_attachments_bucket_arn" {
+  value       = aws_s3_bucket.attachments.arn
+  description = "The ARN of the S3 bucket used for attachments storage"
+}

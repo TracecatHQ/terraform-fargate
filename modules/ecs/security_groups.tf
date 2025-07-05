@@ -255,8 +255,8 @@ resource "aws_vpc_endpoint" "s3" {
           "s3:GetObjectTagging"
         ]
         Resource = [
-          aws_s3_bucket.tracecat.arn,
-          "${aws_s3_bucket.tracecat.arn}/*"
+          aws_s3_bucket.attachments.arn,
+          "${aws_s3_bucket.attachments.arn}/*"
         ]
       }
     ]
