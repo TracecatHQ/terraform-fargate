@@ -1,4 +1,5 @@
-resource "random_uuid" "attachments_bucket_guid" {
+resource "random_id" "attachments_bucket_suffix" {
+  byte_length = 4
 }
 
 # Future bucket examples (when needed):
@@ -14,7 +15,7 @@ resource "random_uuid" "attachments_bucket_guid" {
 
 # S3 bucket for Tracecat case attachments
 resource "aws_s3_bucket" "attachments" {
-  bucket = "tracecat-attachments-${var.tracecat_app_env}-${replace(random_uuid.attachments_bucket_guid.result, "-", "")}"
+  bucket = "tracecat-attachments-${var.tracecat_app_env}-${random_id.attachments_bucket_suffix.hex}"
 
   tags = {
     Name        = "Tracecat attachments storage"
