@@ -49,8 +49,7 @@ locals {
       TRACECAT__CONTEXT_COMPRESSION_ENABLED           = var.context_compression_enabled
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB      = var.context_compression_threshold_kb
       TRACECAT__BLOB_STORAGE_PROTOCOL                 = "s3"
-      TRACECAT__BLOB_STORAGE_BUCKET                   = aws_s3_bucket.attachments.bucket
-      TRACECAT__BLOB_STORAGE_PRESIGNED_URL_ENDPOINT   = "https://${aws_s3_bucket.attachments.bucket}.s3.amazonaws.com"
+      TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS       = aws_s3_bucket.attachments.bucket
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
   ]
