@@ -351,6 +351,17 @@ variable "rds_backup_retention_period" {
   default     = 7
 }
 
+variable "core_db_snapshot_name" {
+  type        = string
+  description = "(Optional) Exact snapshot identifier to use when restoring the core database"
+  default     = null
+}
+
+variable "temporal_db_snapshot_name" {
+  type        = string
+  description = "(Optional) Exact snapshot identifier to use when restoring the temporal database"
+  default     = null
+}
 
 ### Prometheus Metrics
 
