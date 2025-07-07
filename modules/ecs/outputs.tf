@@ -28,7 +28,29 @@ output "local_dns_namespace" {
   value       = local.local_dns_namespace
 }
 
-# Outputs
+# Database outputs
+
+output "core_db_endpoint" {
+  description = "The endpoint of the core database (hostname only, no credentials)"
+  value       = aws_db_instance.core_database.endpoint
+}
+
+output "core_db_port" {
+  description = "The port of the core database"
+  value       = aws_db_instance.core_database.port
+}
+
+output "temporal_db_endpoint" {
+  description = "The endpoint of the temporal database (hostname only, no credentials)"
+  value       = var.disable_temporal_autosetup ? null : aws_db_instance.temporal_database[0].endpoint
+}
+
+output "temporal_db_port" {
+  description = "The port of the temporal database"
+  value       = var.disable_temporal_autosetup ? null : aws_db_instance.temporal_database[0].port
+}
+
+# Existing outputs
 
 output "latest_core_snapshot_encrypted" {
   value       = var.restore_from_snapshot && var.core_db_snapshot_name == null ? try(data.aws_db_snapshot.core_snapshots[0].encrypted, null) : null
