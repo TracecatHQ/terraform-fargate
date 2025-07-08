@@ -150,7 +150,7 @@ variable "temporal_log_level" {
 variable "context_compression_enabled" {
   type        = bool
   description = "Enable compression of large action results in workflow contexts"
-  default     = false
+  default     = true
 }
 
 variable "context_compression_threshold_kb" {
@@ -276,12 +276,12 @@ variable "worker_desired_count" {
 
 variable "executor_cpu" {
   type    = string
-  default = "8192"
+  default = "4096"
 }
 
 variable "executor_memory" {
   type    = string
-  default = "16384"
+  default = "8192"
 }
 
 variable "executor_client_timeout" {
@@ -291,8 +291,8 @@ variable "executor_client_timeout" {
 
 variable "executor_payload_max_size_bytes" {
   type    = string
-  default = "1048576"
-  description = "Maximum size of a payload in bytes the executor can return (default: 1MB)"
+  default = "2097152"
+  description = "Maximum size of a payload in bytes the executor can return (default: 2MB)"
 }
 
 variable "temporal_cpu" {
