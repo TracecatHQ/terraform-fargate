@@ -298,6 +298,12 @@ variable "api_memory" {
   default = "2048"
 }
 
+variable "api_desired_count" {
+  type        = number
+  description = "Desired number of API instances to run"
+  default     = 2
+}
+
 variable "worker_cpu" {
   type    = string
   default = "2048"
