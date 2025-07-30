@@ -17,7 +17,7 @@ locals {
   # Redis configuration with IAM auth
   redis_host = aws_elasticache_replication_group.redis.primary_endpoint_address
   redis_port = tostring(aws_elasticache_replication_group.redis.port)
-  redis_url  = "rediss://${aws_elasticache_user.iam_user.user_name}@${aws_elasticache_replication_group.redis.primary_endpoint_address}:${aws_elasticache_replication_group.redis.port}"
+  redis_url  = "rediss://${aws_elasticache_user.app_user.user_name}@${aws_elasticache_replication_group.redis.primary_endpoint_address}:${aws_elasticache_replication_group.redis.port}"
 
   # Temporal client authentication
   temporal_api_key_arn = var.temporal_api_key_arn

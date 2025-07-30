@@ -15,13 +15,17 @@ resource "aws_elasticache_user" "default" {
   }
 }
 
-# IAM-auth user + user-group
-resource "aws_elasticache_user" "iam_user" {
-  user_id       = "tracecat-iam-user"
-  user_name     = "tracecat-iam-user"  # Must match user_id for IAM auth
+# Application user (no-password-required)
+resource "aws_elasticache_user" "app_user" {
+  user_id       = "tracecat-app"
+  user_name     = "tracecat-app"         # App connections will use this username
   engine        = "REDIS"
-  access_string = "on ~* +@all"
-  authentication_mode { type = "iam" }
+  access_string = "on ~* +@all"          # Full access; refine later if needed
+
+  # No password; access allowed purely by VPC / SG controls
+  authentication_mode {
+    type = "no-password-required"
+  }
 }
 
 resource "aws_elasticache_user_group" "redis" {
@@ -29,14 +33,14 @@ resource "aws_elasticache_user_group" "redis" {
   engine        = "REDIS"
   user_ids      = [
     aws_elasticache_user.default.user_id,
-    aws_elasticache_user.iam_user.user_id
+    aws_elasticache_user.app_user.user_id
   ]
 }
 
 # The replication group (single-node, TLS & KMS encryption are ON by default in Redis 7)
 resource "aws_elasticache_replication_group" "redis" {
   replication_group_id = "tracecat-redis"
-  description          = "Tracecat Redis - IAM auth"
+  description          = "Tracecat Redis - no-password user"
   engine               = "redis"
   engine_version       = "7.1"
   node_type            = var.redis_node_type # default cache.t3.micro
