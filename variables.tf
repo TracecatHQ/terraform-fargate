@@ -296,8 +296,8 @@ variable "executor_client_timeout" {
 }
 
 variable "executor_payload_max_size_bytes" {
-  type    = string
-  default = "2097152"
+  type        = string
+  default     = "2097152"
   description = "Maximum size of a payload in bytes the executor can return (default: 2MB)"
 }
 

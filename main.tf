@@ -37,14 +37,14 @@ module "ecs" {
   hosted_zone_id = var.hosted_zone_id
 
   # Tracecat version
-  tracecat_image                           = var.tracecat_image
-  tracecat_ui_image                        = var.tracecat_ui_image
-  tracecat_image_tag                       = var.tracecat_image_tag
-  temporal_server_image                    = var.temporal_server_image
-  temporal_server_image_tag                = var.temporal_server_image_tag
-  temporal_ui_image                        = var.temporal_ui_image
-  temporal_ui_image_tag                    = var.temporal_ui_image_tag
-  force_new_deployment                     = var.force_new_deployment
+  tracecat_image            = var.tracecat_image
+  tracecat_ui_image         = var.tracecat_ui_image
+  tracecat_image_tag        = var.tracecat_image_tag
+  temporal_server_image     = var.temporal_server_image
+  temporal_server_image_tag = var.temporal_server_image_tag
+  temporal_ui_image         = var.temporal_ui_image
+  temporal_ui_image_tag     = var.temporal_ui_image_tag
+  force_new_deployment      = var.force_new_deployment
 
   # Temporal configuration
   disable_temporal_ui        = var.disable_temporal_ui
@@ -54,10 +54,10 @@ module "ecs" {
   temporal_namespace         = var.temporal_namespace
 
   # Container environment variables
-  tracecat_app_env                         = var.tracecat_app_env
-  log_level                                = var.log_level
-  temporal_log_level                       = var.temporal_log_level
-  context_compression_enabled     = var.context_compression_enabled
+  tracecat_app_env                 = var.tracecat_app_env
+  log_level                        = var.log_level
+  temporal_log_level               = var.temporal_log_level
+  context_compression_enabled      = var.context_compression_enabled
   context_compression_threshold_kb = var.context_compression_threshold_kb
 
   # RDS settings
@@ -76,9 +76,9 @@ module "ecs" {
   tracecat_signing_secret_arn    = var.tracecat_signing_secret_arn
 
   # Authentication
-  auth_types                            = var.auth_types
-  auth_allowed_domains                  = var.auth_allowed_domains
-  auth_superadmin_email                 = var.auth_superadmin_email
+  auth_types            = var.auth_types
+  auth_allowed_domains  = var.auth_allowed_domains
+  auth_superadmin_email = var.auth_superadmin_email
 
   # OAuth
   oauth_client_id_arn     = var.oauth_client_id_arn
@@ -96,25 +96,25 @@ module "ecs" {
   temporal_api_key_arn = var.temporal_api_key_arn
 
   # Compute / memory
-  api_cpu                     = var.api_cpu
-  api_memory                  = var.api_memory
-  worker_cpu                  = var.worker_cpu
-  worker_memory               = var.worker_memory
-  worker_desired_count        = var.worker_desired_count
-  executor_cpu                = var.executor_cpu
-  executor_memory             = var.executor_memory
-  executor_client_timeout     = var.executor_client_timeout
+  api_cpu                         = var.api_cpu
+  api_memory                      = var.api_memory
+  worker_cpu                      = var.worker_cpu
+  worker_memory                   = var.worker_memory
+  worker_desired_count            = var.worker_desired_count
+  executor_cpu                    = var.executor_cpu
+  executor_memory                 = var.executor_memory
+  executor_client_timeout         = var.executor_client_timeout
   executor_payload_max_size_bytes = var.executor_payload_max_size_bytes
-  ui_cpu                      = var.ui_cpu
-  ui_memory                   = var.ui_memory
-  temporal_cpu                = var.temporal_cpu
-  temporal_memory             = var.temporal_memory
-  temporal_client_rpc_timeout = var.temporal_client_rpc_timeout
-  temporal_num_history_shards = var.temporal_num_history_shards
-  caddy_cpu                   = var.caddy_cpu
-  caddy_memory                = var.caddy_memory
-  db_instance_class           = var.db_instance_class
-  db_instance_size            = var.db_instance_size
+  ui_cpu                          = var.ui_cpu
+  ui_memory                       = var.ui_memory
+  temporal_cpu                    = var.temporal_cpu
+  temporal_memory                 = var.temporal_memory
+  temporal_client_rpc_timeout     = var.temporal_client_rpc_timeout
+  temporal_num_history_shards     = var.temporal_num_history_shards
+  caddy_cpu                       = var.caddy_cpu
+  caddy_memory                    = var.caddy_memory
+  db_instance_class               = var.db_instance_class
+  db_instance_size                = var.db_instance_size
 
   # Metrics configuration
   enable_metrics             = var.enable_metrics

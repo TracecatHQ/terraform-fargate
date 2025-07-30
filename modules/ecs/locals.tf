@@ -14,6 +14,11 @@ locals {
   temporal_namespace     = var.temporal_namespace
   allow_origins          = "${var.domain_name},http://ui-service:3000" # Allow api service and public app to access the API
 
+  # Redis configuration with IAM auth
+  redis_host = aws_elasticache_replication_group.redis.primary_endpoint_address
+  redis_port = tostring(aws_elasticache_replication_group.redis.port)
+  redis_url  = "rediss://${aws_elasticache_user.iam_user.user_name}@${aws_elasticache_replication_group.redis.primary_endpoint_address}:${aws_elasticache_replication_group.redis.port}"
+
   # Temporal client authentication
   temporal_api_key_arn = var.temporal_api_key_arn
 
@@ -28,63 +33,75 @@ locals {
 
   api_env = [
     for k, v in merge({
-      LOG_LEVEL                                       = var.log_level
-      RUN_MIGRATIONS                                  = "true"
-      TEMPORAL__CLIENT_RPC_TIMEOUT                    = var.temporal_client_rpc_timeout
-      TEMPORAL__CLUSTER_NAMESPACE                     = local.temporal_namespace
-      TEMPORAL__CLUSTER_QUEUE                         = local.temporal_cluster_queue
-      TEMPORAL__CLUSTER_URL                           = local.temporal_cluster_url
-      TEMPORAL__API_KEY__ARN                          = local.temporal_api_key_arn
-      TRACECAT__ALLOW_ORIGINS                         = local.allow_origins
-      TRACECAT__API_ROOT_PATH                         = "/api"
-      TRACECAT__API_URL                               = local.internal_api_url
-      TRACECAT__APP_ENV                               = var.tracecat_app_env
-      TRACECAT__AUTH_ALLOWED_DOMAINS                  = var.auth_allowed_domains
-      TRACECAT__AUTH_SUPERADMIN_EMAIL                 = var.auth_superadmin_email
-      TRACECAT__AUTH_TYPES                            = var.auth_types
-      TRACECAT__DB_ENDPOINT                           = local.core_db_hostname
-      TRACECAT__EXECUTOR_URL                          = local.internal_executor_url
-      TRACECAT__PUBLIC_API_URL                        = local.public_api_url
-      TRACECAT__PUBLIC_APP_URL                        = local.public_app_url
-      TRACECAT__CONTEXT_COMPRESSION_ENABLED           = var.context_compression_enabled
-      TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB      = var.context_compression_threshold_kb
-      TRACECAT__BLOB_STORAGE_PROTOCOL                 = "s3"
-      TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS       = aws_s3_bucket.attachments.bucket
+      LOG_LEVEL                                  = var.log_level
+      RUN_MIGRATIONS                             = "true"
+      TEMPORAL__CLIENT_RPC_TIMEOUT               = var.temporal_client_rpc_timeout
+      TEMPORAL__CLUSTER_NAMESPACE                = local.temporal_namespace
+      TEMPORAL__CLUSTER_QUEUE                    = local.temporal_cluster_queue
+      TEMPORAL__CLUSTER_URL                      = local.temporal_cluster_url
+      TEMPORAL__API_KEY__ARN                     = local.temporal_api_key_arn
+      TRACECAT__ALLOW_ORIGINS                    = local.allow_origins
+      TRACECAT__API_ROOT_PATH                    = "/api"
+      TRACECAT__API_URL                          = local.internal_api_url
+      TRACECAT__APP_ENV                          = var.tracecat_app_env
+      TRACECAT__AUTH_ALLOWED_DOMAINS             = var.auth_allowed_domains
+      TRACECAT__AUTH_SUPERADMIN_EMAIL            = var.auth_superadmin_email
+      TRACECAT__AUTH_TYPES                       = var.auth_types
+      TRACECAT__DB_ENDPOINT                      = local.core_db_hostname
+      TRACECAT__EXECUTOR_URL                     = local.internal_executor_url
+      TRACECAT__PUBLIC_API_URL                   = local.public_api_url
+      TRACECAT__PUBLIC_APP_URL                   = local.public_app_url
+      TRACECAT__CONTEXT_COMPRESSION_ENABLED      = var.context_compression_enabled
+      TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
+      TRACECAT__BLOB_STORAGE_PROTOCOL            = "s3"
+      TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS  = aws_s3_bucket.attachments.bucket
+      # Redis
+      REDIS_HOST = local.redis_host
+      REDIS_PORT = local.redis_port
+      REDIS_URL  = local.redis_url
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
   ]
 
   worker_env = [
     for k, v in merge({
-      LOG_LEVEL                         = var.log_level
-      TEMPORAL__CLIENT_RPC_TIMEOUT      = var.temporal_client_rpc_timeout
-      TEMPORAL__CLUSTER_NAMESPACE       = local.temporal_namespace
-      TEMPORAL__CLUSTER_QUEUE           = local.temporal_cluster_queue
-      TEMPORAL__CLUSTER_URL             = local.temporal_cluster_url
-      TEMPORAL__API_KEY__ARN            = local.temporal_api_key_arn
-      TRACECAT__API_ROOT_PATH           = "/api"
-      TRACECAT__API_URL                 = local.internal_api_url
-      TRACECAT__APP_ENV                 = var.tracecat_app_env
-      TRACECAT__DB_ENDPOINT             = local.core_db_hostname
-      TRACECAT__EXECUTOR_CLIENT_TIMEOUT = var.executor_client_timeout
-      TRACECAT__EXECUTOR_URL            = local.internal_executor_url
-      TRACECAT__PUBLIC_API_URL          = local.public_api_url
-      TEMPORAL__METRICS_PORT            = var.enable_metrics ? 9000 : null
-      SENTRY_DSN                        = var.sentry_dsn
+      LOG_LEVEL                                  = var.log_level
+      TEMPORAL__CLIENT_RPC_TIMEOUT               = var.temporal_client_rpc_timeout
+      TEMPORAL__CLUSTER_NAMESPACE                = local.temporal_namespace
+      TEMPORAL__CLUSTER_QUEUE                    = local.temporal_cluster_queue
+      TEMPORAL__CLUSTER_URL                      = local.temporal_cluster_url
+      TEMPORAL__API_KEY__ARN                     = local.temporal_api_key_arn
+      TRACECAT__API_ROOT_PATH                    = "/api"
+      TRACECAT__API_URL                          = local.internal_api_url
+      TRACECAT__APP_ENV                          = var.tracecat_app_env
+      TRACECAT__DB_ENDPOINT                      = local.core_db_hostname
+      TRACECAT__EXECUTOR_CLIENT_TIMEOUT          = var.executor_client_timeout
+      TRACECAT__EXECUTOR_URL                     = local.internal_executor_url
+      TRACECAT__PUBLIC_API_URL                   = local.public_api_url
+      TEMPORAL__METRICS_PORT                     = var.enable_metrics ? 9000 : null
+      SENTRY_DSN                                 = var.sentry_dsn
       TRACECAT__CONTEXT_COMPRESSION_ENABLED      = var.context_compression_enabled
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
+      # Redis
+      REDIS_HOST = local.redis_host
+      REDIS_PORT = local.redis_port
+      REDIS_URL  = local.redis_url
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
   ]
 
   executor_env = [
     for k, v in merge({
-      LOG_LEVEL                                = var.log_level
-      TRACECAT__APP_ENV                        = var.tracecat_app_env
-      TRACECAT__DB_ENDPOINT                    = local.core_db_hostname
+      LOG_LEVEL                                  = var.log_level
+      TRACECAT__APP_ENV                          = var.tracecat_app_env
+      TRACECAT__DB_ENDPOINT                      = local.core_db_hostname
       TRACECAT__CONTEXT_COMPRESSION_ENABLED      = var.context_compression_enabled
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
       TRACECAT__EXECUTOR_PAYLOAD_MAX_SIZE_BYTES  = var.executor_payload_max_size_bytes
+      # Redis
+      REDIS_HOST = local.redis_host
+      REDIS_PORT = local.redis_port
+      REDIS_URL  = local.redis_url
     }, local.tracecat_db_configs) :
     { name = k, value = tostring(v) }
   ]
@@ -97,6 +114,10 @@ locals {
       NEXT_PUBLIC_AUTH_TYPES = var.auth_types
       NEXT_SERVER_API_URL    = local.internal_api_url
       NODE_ENV               = var.tracecat_app_env
+      # Redis
+      REDIS_HOST = local.redis_host
+      REDIS_PORT = local.redis_port
+      REDIS_URL  = local.redis_url
     } :
     { name = k, value = tostring(v) }
   ]

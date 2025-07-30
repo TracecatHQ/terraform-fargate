@@ -33,6 +33,28 @@ resource "aws_iam_policy" "ecs_poll" {
 }
 
 
+# Redis IAM access policy
+resource "aws_iam_policy" "redis_iam_access" {
+  name        = "TracecatRedisIAMAccessPolicy"
+  description = "Policy for ElastiCache Redis IAM authentication"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "elasticache:Connect"
+        ]
+        Resource = [
+          "arn:aws:elasticache:${var.aws_region}:${data.aws_caller_identity.current.account_id}:replicationgroup:${aws_elasticache_replication_group.redis.id}",
+          "arn:aws:elasticache:${var.aws_region}:${data.aws_caller_identity.current.account_id}:user:${aws_elasticache_user.iam_user.user_id}"
+        ]
+      }
+    ]
+  })
+}
+
 # S3 access policy for blob storage
 resource "aws_iam_policy" "s3_attachments_access" {
   name        = "TracecatS3BlobStoragePolicy"
@@ -79,7 +101,7 @@ resource "aws_iam_policy" "s3_attachments_access" {
         }
       },
       {
-        Sid    = "AllowPresignedURLGeneration" 
+        Sid    = "AllowPresignedURLGeneration"
         Effect = "Allow"
         Action = [
           "s3:GetObject"
@@ -246,6 +268,12 @@ resource "aws_iam_role_policy" "api_worker_task_db_access" {
 # Attach S3 policy to API/Worker task role
 resource "aws_iam_role_policy_attachment" "api_worker_task_s3" {
   policy_arn = aws_iam_policy.s3_attachments_access.arn
+  role       = aws_iam_role.api_worker_task.name
+}
+
+# Attach Redis IAM policy to API/Worker task role
+resource "aws_iam_role_policy_attachment" "api_worker_task_redis" {
+  policy_arn = aws_iam_policy.redis_iam_access.arn
   role       = aws_iam_role.api_worker_task.name
 }
 

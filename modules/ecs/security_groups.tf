@@ -232,18 +232,36 @@ resource "aws_security_group" "temporal_db" {
 
 }
 
+resource "aws_security_group" "redis" {
+  name_prefix = "redis-"
+  description = "Security group for Redis cluster"
+  vpc_id      = var.vpc_id
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  ingress {
+    description     = "Allow API and Executor services to connect to Redis"
+    protocol        = "tcp"
+    from_port       = 6379
+    to_port         = 6379
+    security_groups = [aws_security_group.core.id]
+  }
+}
+
 # S3 VPC Endpoint (Gateway type for cost efficiency)
 resource "aws_vpc_endpoint" "s3" {
   vpc_id            = var.vpc_id
   service_name      = "com.amazonaws.${var.aws_region}.s3"
   vpc_endpoint_type = "Gateway"
   route_table_ids   = var.private_route_table_ids
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
+        Effect    = "Allow"
         Principal = "*"
         Action = [
           "s3:GetObject",

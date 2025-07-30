@@ -62,7 +62,8 @@ resource "aws_ecs_service" "tracecat_worker" {
     security_groups = [
       aws_security_group.core.id,
       aws_security_group.core_db.id,
-      aws_security_group.caddy.id
+      aws_security_group.caddy.id,
+      aws_security_group.redis.id
     ]
   }
 

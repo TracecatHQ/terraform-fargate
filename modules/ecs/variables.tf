@@ -336,8 +336,8 @@ variable "executor_client_timeout" {
 }
 
 variable "executor_payload_max_size_bytes" {
-  type    = string
-  default = "2097152"
+  type        = string
+  default     = "2097152"
   description = "Maximum size of a payload in bytes the executor can return (default: 2MB)"
 }
 
@@ -471,4 +471,30 @@ variable "sentry_dsn" {
   type        = string
   default     = null
   sensitive   = true
+}
+
+# Redis Configuration
+
+variable "redis_host" {
+  type        = string
+  description = "Hostname of the Redis cluster or instance"
+  default     = null
+}
+
+variable "redis_port" {
+  type        = string
+  description = "Port Redis is listening on (default 6379)"
+  default     = "6379"
+}
+
+variable "redis_url" {
+  type        = string
+  description = "Full Redis connection URL (e.g. redis://:password@host:6379/0)"
+  default     = null
+}
+
+variable "redis_node_type" {
+  type        = string
+  description = "ElastiCache Redis node type"
+  default     = "cache.t3.micro"
 }

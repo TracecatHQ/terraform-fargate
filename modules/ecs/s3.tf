@@ -63,7 +63,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "attachments" {
   rule {
     id     = "attachments_lifecycle"
     status = "Enabled"
-    
+
     # Apply to all objects in the bucket
     filter {}
 
@@ -99,8 +99,8 @@ resource "aws_s3_bucket_policy" "attachments" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid       = "AllowECSTaskAccess"
-        Effect    = "Allow"
+        Sid    = "AllowECSTaskAccess"
+        Effect = "Allow"
         Principal = {
           AWS = aws_iam_role.api_worker_task.arn
         }
@@ -118,12 +118,12 @@ resource "aws_s3_bucket_policy" "attachments" {
         ]
       },
       {
-        Sid       = "DenyInsecureConnections"
-        Effect    = "Deny"
+        Sid    = "DenyInsecureConnections"
+        Effect = "Deny"
         Principal = {
           AWS = aws_iam_role.api_worker_task.arn
         }
-        Action    = "s3:*"
+        Action = "s3:*"
         Resource = [
           aws_s3_bucket.attachments.arn,
           "${aws_s3_bucket.attachments.arn}/*"

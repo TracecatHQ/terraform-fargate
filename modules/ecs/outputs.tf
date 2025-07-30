@@ -71,3 +71,30 @@ output "s3_attachments_bucket_arn" {
   value       = aws_s3_bucket.attachments.arn
   description = "The ARN of the S3 bucket used for attachments storage"
 }
+
+# Redis outputs
+
+output "redis_endpoint" {
+  value       = aws_elasticache_replication_group.redis.primary_endpoint_address
+  description = "The primary endpoint address of the Redis cluster"
+}
+
+output "redis_port" {
+  value       = aws_elasticache_replication_group.redis.port
+  description = "The port of the Redis cluster"
+}
+
+output "redis_url" {
+  value       = local.redis_url
+  description = "The Redis connection URL with IAM authentication"
+}
+
+output "core_sg_id" {
+  value       = aws_security_group.core.id
+  description = "The ID of the core security group"
+}
+
+output "caddy_sg_id" {
+  value       = aws_security_group.caddy.id
+  description = "The ID of the caddy security group"
+}

@@ -44,25 +44,25 @@ data "aws_db_snapshot" "temporal_snapshots" {
 }
 
 resource "aws_db_instance" "core_database" {
-  identifier                   = "core-database"
-  engine                       = "postgres"
-  engine_version               = "16.3"
-  instance_class               = "${var.db_instance_class}.${var.db_instance_size}"
-  allocated_storage            = 5
-  storage_encrypted            = true
-  storage_type                 = "gp2"
-  username                     = "postgres"
-  multi_az                     = var.rds_multi_az
-  manage_master_user_password  = true
-  db_subnet_group_name         = aws_db_subnet_group.tracecat_db_subnet.name
-  vpc_security_group_ids       = [aws_security_group.core_db.id]
-  skip_final_snapshot          = var.rds_skip_final_snapshot
-  final_snapshot_identifier    = "final-core-db-${local.snapshot_timestamp}-${random_string.core_snapshot_suffix.result}"
-  snapshot_identifier          = var.restore_from_snapshot ? (
-                                   var.core_db_snapshot_name != null ?
-                                   var.core_db_snapshot_name :
-                                   try(data.aws_db_snapshot.core_snapshots[0].db_snapshot_arn, null)
-                                 ) : null
+  identifier                  = "core-database"
+  engine                      = "postgres"
+  engine_version              = "16.3"
+  instance_class              = "${var.db_instance_class}.${var.db_instance_size}"
+  allocated_storage           = 5
+  storage_encrypted           = true
+  storage_type                = "gp2"
+  username                    = "postgres"
+  multi_az                    = var.rds_multi_az
+  manage_master_user_password = true
+  db_subnet_group_name        = aws_db_subnet_group.tracecat_db_subnet.name
+  vpc_security_group_ids      = [aws_security_group.core_db.id]
+  skip_final_snapshot         = var.rds_skip_final_snapshot
+  final_snapshot_identifier   = "final-core-db-${local.snapshot_timestamp}-${random_string.core_snapshot_suffix.result}"
+  snapshot_identifier = var.restore_from_snapshot ? (
+    var.core_db_snapshot_name != null ?
+    var.core_db_snapshot_name :
+    try(data.aws_db_snapshot.core_snapshots[0].db_snapshot_arn, null)
+  ) : null
   deletion_protection          = var.rds_deletion_protection
   apply_immediately            = var.rds_apply_immediately
   backup_retention_period      = var.rds_backup_retention_period
@@ -78,26 +78,26 @@ resource "aws_db_instance" "core_database" {
 }
 
 resource "aws_db_instance" "temporal_database" {
-  count                        = var.disable_temporal_autosetup ? 0 : 1
-  identifier                   = "temporal-database"
-  engine                       = "postgres"
-  engine_version               = "13.15"
-  instance_class               = "${var.db_instance_class}.${var.db_instance_size}"
-  allocated_storage            = 5
-  storage_encrypted            = true
-  storage_type                 = "gp2"
-  username                     = "postgres"
-  manage_master_user_password  = true
-  multi_az                     = var.rds_multi_az
-  db_subnet_group_name         = aws_db_subnet_group.tracecat_db_subnet.name
-  vpc_security_group_ids       = [aws_security_group.temporal_db.id]
-  skip_final_snapshot          = var.rds_skip_final_snapshot
-  final_snapshot_identifier    = "final-temporal-db-${local.snapshot_timestamp}-${random_string.temporal_snapshot_suffix[0].result}"
-  snapshot_identifier          = var.restore_from_snapshot ? (
-                                   var.temporal_db_snapshot_name != null ?
-                                   var.temporal_db_snapshot_name :
-                                   try(data.aws_db_snapshot.temporal_snapshots[0].db_snapshot_arn, null)
-                                 ) : null
+  count                       = var.disable_temporal_autosetup ? 0 : 1
+  identifier                  = "temporal-database"
+  engine                      = "postgres"
+  engine_version              = "13.15"
+  instance_class              = "${var.db_instance_class}.${var.db_instance_size}"
+  allocated_storage           = 5
+  storage_encrypted           = true
+  storage_type                = "gp2"
+  username                    = "postgres"
+  manage_master_user_password = true
+  multi_az                    = var.rds_multi_az
+  db_subnet_group_name        = aws_db_subnet_group.tracecat_db_subnet.name
+  vpc_security_group_ids      = [aws_security_group.temporal_db.id]
+  skip_final_snapshot         = var.rds_skip_final_snapshot
+  final_snapshot_identifier   = "final-temporal-db-${local.snapshot_timestamp}-${random_string.temporal_snapshot_suffix[0].result}"
+  snapshot_identifier = var.restore_from_snapshot ? (
+    var.temporal_db_snapshot_name != null ?
+    var.temporal_db_snapshot_name :
+    try(data.aws_db_snapshot.temporal_snapshots[0].db_snapshot_arn, null)
+  ) : null
   deletion_protection          = var.rds_deletion_protection
   apply_immediately            = var.rds_apply_immediately
   backup_retention_period      = var.rds_backup_retention_period
