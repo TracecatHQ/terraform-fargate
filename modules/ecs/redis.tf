@@ -22,7 +22,7 @@ resource "aws_elasticache_user_group" "redis" {
 # The replication group (single-node, TLS & KMS encryption are ON by default in Redis 7)
 resource "aws_elasticache_replication_group" "redis" {
   replication_group_id = "tracecat-redis"
-  description          = "Tracecat Redis – IAM auth"
+  description          = "Tracecat Redis - IAM auth"
   engine               = "redis"
   engine_version       = "7.1"
   node_type            = var.redis_node_type # default cache.t3.micro
