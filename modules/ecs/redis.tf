@@ -6,8 +6,8 @@ resource "aws_elasticache_subnet_group" "redis" {
 
 # IAM-auth user + user-group
 resource "aws_elasticache_user" "iam_user" {
-  user_id       = "tracecat-iam"
-  user_name     = "iam-user"
+  user_id       = "tracecat-iam-user"
+  user_name     = "tracecat-iam-user"  # Must match user_id for IAM auth
   engine        = "REDIS"
   access_string = "on ~* +@all"
   authentication_mode { type = "iam" }
