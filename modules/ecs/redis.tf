@@ -35,6 +35,10 @@ resource "aws_elasticache_user_group" "redis" {
     aws_elasticache_user.default.user_id,
     aws_elasticache_user.app_user.user_id
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # The replication group (single-node, TLS & KMS encryption are ON by default in Redis 7)
