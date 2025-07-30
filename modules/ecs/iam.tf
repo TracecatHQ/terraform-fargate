@@ -36,7 +36,7 @@ resource "aws_iam_policy" "ecs_poll" {
 # Redis IAM access policy
 resource "aws_iam_policy" "redis_iam_access" {
   name        = "TracecatRedisIAMAccessPolicy"
-  description = "Policy for ElastiCache Redis IAM authentication"
+  description = "Policy for ElastiCache Redis access (SG-only, no IAM auth)"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -44,12 +44,9 @@ resource "aws_iam_policy" "redis_iam_access" {
       {
         Effect = "Allow"
         Action = [
-          "elasticache:Connect"
+          "elasticache:DescribeReplicationGroups"
         ]
-        Resource = [
-          "arn:aws:elasticache:${var.aws_region}:${data.aws_caller_identity.current.account_id}:replicationgroup:${aws_elasticache_replication_group.redis.id}",
-          "arn:aws:elasticache:${var.aws_region}:${data.aws_caller_identity.current.account_id}:user:${aws_elasticache_user.iam_user.user_id}"
-        ]
+        Resource = "*"
       }
     ]
   })
