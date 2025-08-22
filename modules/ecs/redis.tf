@@ -8,7 +8,7 @@ resource "aws_elasticache_subnet_group" "redis" {
 resource "aws_elasticache_user" "default" {
   user_id       = "default-user-tracecat"
   user_name     = "default"  # Must be named "default"
-  engine        = "REDIS"
+  engine        = "redis"
   access_string = "off ~* -@all"  # Disabled user with no access
   authentication_mode {
     type = "no-password-required"
@@ -19,7 +19,7 @@ resource "aws_elasticache_user" "default" {
 resource "aws_elasticache_user" "app_user" {
   user_id       = "tracecat-app"
   user_name     = "tracecat-app"         # App connections will use this username
-  engine        = "REDIS"
+  engine        = "redis"
   access_string = "on ~* +@all"          # Full access; refine later if needed
 
   # No password; access allowed purely by VPC / SG controls
@@ -30,7 +30,7 @@ resource "aws_elasticache_user" "app_user" {
 
 resource "aws_elasticache_user_group" "redis" {
   user_group_id = "tracecat-users"
-  engine        = "REDIS"
+  engine        = "redis"
   user_ids      = [
     aws_elasticache_user.default.user_id,
     aws_elasticache_user.app_user.user_id
