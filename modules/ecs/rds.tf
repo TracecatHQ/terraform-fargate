@@ -69,7 +69,7 @@ resource "aws_db_instance" "core_database" {
   performance_insights_enabled = var.rds_performance_insights_enabled
   auto_minor_version_upgrade   = var.rds_auto_minor_version_upgrade
 
-  lifecycle {
+  lifecycle {p
     ignore_changes = [
       snapshot_identifier,
       final_snapshot_identifier

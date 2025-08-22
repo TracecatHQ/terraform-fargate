@@ -357,6 +357,12 @@ variable "rds_backup_retention_period" {
   default     = 7
 }
 
+variable "rds_performance_insights_enabled" {
+  type        = bool
+  description = "Enable Performance Insights for RDS instances"
+  default     = false
+}
+
 variable "core_db_snapshot_name" {
   type        = string
   description = "(Optional) Exact snapshot identifier to use when restoring the core database"
