@@ -63,6 +63,8 @@ module "ecs" {
   # RDS settings
   restore_from_snapshot       = var.restore_from_snapshot
   rds_backup_retention_period = var.rds_backup_retention_period
+  rds_performance_insights_enabled = var.rds_performance_insights_enabled
+  rds_database_insights_mode = var.rds_database_insights_mode
   core_db_snapshot_name       = var.core_db_snapshot_name
   temporal_db_snapshot_name   = var.temporal_db_snapshot_name
 

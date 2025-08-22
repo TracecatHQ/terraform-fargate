@@ -427,6 +427,12 @@ variable "rds_performance_insights_enabled" {
   default     = false
 }
 
+variable "rds_database_insights_mode" {
+  type        = string
+  description = "The database insights mode for RDS instances (standard, advanced)"
+  default     = "advanced"
+}
+
 variable "rds_auto_minor_version_upgrade" {
   type        = bool
   description = "Enable auto minor version upgrades for RDS instances"

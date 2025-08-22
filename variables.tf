@@ -363,6 +363,12 @@ variable "rds_performance_insights_enabled" {
   default     = false
 }
 
+variable "rds_database_insights_mode" {
+  type        = string
+  description = "The database insights mode for RDS instances (standard, advanced)"
+  default     = "advanced"
+}
+
 variable "core_db_snapshot_name" {
   type        = string
   description = "(Optional) Exact snapshot identifier to use when restoring the core database"

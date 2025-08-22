@@ -68,6 +68,7 @@ resource "aws_db_instance" "core_database" {
   backup_retention_period      = var.rds_backup_retention_period
   performance_insights_enabled = var.rds_performance_insights_enabled
   auto_minor_version_upgrade   = var.rds_auto_minor_version_upgrade
+  database_insights_mode       = var.rds_database_insights_mode
 
   lifecycle {
     ignore_changes = [
