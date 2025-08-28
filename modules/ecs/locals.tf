@@ -29,6 +29,10 @@ locals {
     TRACECAT__DB_PORT      = "5432"
     TRACECAT__DB_NAME      = "postgres" # Hardcoded in RDS resource configs
     TRACECAT__DB_PASS__ARN = data.aws_secretsmanager_secret_version.tracecat_db_password.arn
+    TRACECAT__DB_MAX_OVERFLOW = var.db_max_overflow
+    TRACECAT__DB_POOL_SIZE    = var.db_pool_size
+    TRACECAT__DB_POOL_TIMEOUT = var.db_pool_timeout
+    TRACECAT__DB_POOL_RECYCLE = var.db_pool_recycle
   }
 
   api_env = [
