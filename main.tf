@@ -60,6 +60,12 @@ module "ecs" {
   context_compression_enabled      = var.context_compression_enabled
   context_compression_threshold_kb = var.context_compression_threshold_kb
 
+  # Database connection pool
+  db_max_overflow = var.db_max_overflow
+  db_pool_size    = var.db_pool_size
+  db_pool_timeout = var.db_pool_timeout
+  db_pool_recycle = var.db_pool_recycle
+
   # RDS settings
   restore_from_snapshot       = var.restore_from_snapshot
   rds_backup_retention_period = var.rds_backup_retention_period

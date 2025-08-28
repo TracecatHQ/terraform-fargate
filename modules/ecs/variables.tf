@@ -185,6 +185,32 @@ variable "temporal_log_level" {
   default = "warn"
 }
 
+### Database Connection Pool
+
+variable "db_max_overflow" {
+  type        = string
+  description = "The maximum number of connections to allow in the DB pool"
+  default     = "30"
+}
+
+variable "db_pool_size" {
+  type        = string
+  description = "The size of the database connection pool"
+  default     = "30"
+}
+
+variable "db_pool_timeout" {
+  type        = string
+  description = "The timeout in seconds for acquiring a DB connection from the pool"
+  default     = "30"
+}
+
+variable "db_pool_recycle" {
+  type        = string
+  description = "The time in seconds after which pool connections are recycled"
+  default     = "1800"
+}
+
 ### Context Compression Configuration
 
 variable "context_compression_enabled" {
