@@ -34,6 +34,10 @@ locals {
     TRACECAT__DB_POOL_TIMEOUT = var.db_pool_timeout
     TRACECAT__DB_POOL_RECYCLE = var.db_pool_recycle
   }
+  tracecat_db_configs_executor = {
+    TRACECAT__DB_MAX_OVERFLOW = var.db_max_overflow_executor
+    TRACECAT__DB_POOL_SIZE    = var.db_pool_size_executor
+  }
 
   api_env = [
     for k, v in merge({
@@ -106,7 +110,7 @@ locals {
       REDIS_HOST = local.redis_host
       REDIS_PORT = local.redis_port
       REDIS_URL  = local.redis_url
-    }, local.tracecat_db_configs) :
+    }, local.tracecat_db_configs, local.tracecat_db_configs_executor) :
     { name = k, value = tostring(v) }
   ]
 
