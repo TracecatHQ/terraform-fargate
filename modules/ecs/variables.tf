@@ -211,6 +211,18 @@ variable "db_pool_recycle" {
   default     = "1800"
 }
 
+variable "db_max_overflow_executor" {
+  type        = string
+  description = "The maximum number of connections to allow in the DB pool"
+  default     = "30"
+}
+
+variable "db_pool_size_executor" {
+  type        = string
+  description = "The size of the database connection pool"
+  default     = "30"
+}
+
 ### Context Compression Configuration
 
 variable "context_compression_enabled" {
