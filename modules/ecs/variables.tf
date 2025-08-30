@@ -163,6 +163,12 @@ variable "temporal_namespace" {
   default     = "default"
 }
 
+variable "temporal_task_timeout" {
+  type        = number
+  description = "Temporal task timeout in seconds"
+  default     = 10
+}
+
 
 ### Container Env Vars
 # NOTE: sensitive variables are stored in secrets manager

@@ -44,6 +44,7 @@ locals {
       LOG_LEVEL                                  = var.log_level
       RUN_MIGRATIONS                             = "true"
       TEMPORAL__CLIENT_RPC_TIMEOUT               = var.temporal_client_rpc_timeout
+      TEMPORAL__TASK_TIMEOUT                     = var.temporal_task_timeout
       TEMPORAL__CLUSTER_NAMESPACE                = local.temporal_namespace
       TEMPORAL__CLUSTER_QUEUE                    = local.temporal_cluster_queue
       TEMPORAL__CLUSTER_URL                      = local.temporal_cluster_url
@@ -75,6 +76,7 @@ locals {
     for k, v in merge({
       LOG_LEVEL                                  = var.log_level
       TEMPORAL__CLIENT_RPC_TIMEOUT               = var.temporal_client_rpc_timeout
+      TEMPORAL__TASK_TIMEOUT                     = var.temporal_task_timeout
       TEMPORAL__CLUSTER_NAMESPACE                = local.temporal_namespace
       TEMPORAL__CLUSTER_QUEUE                    = local.temporal_cluster_queue
       TEMPORAL__CLUSTER_URL                      = local.temporal_cluster_url

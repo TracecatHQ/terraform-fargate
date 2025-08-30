@@ -52,6 +52,7 @@ module "ecs" {
   temporal_cluster_url       = var.temporal_cluster_url
   temporal_cluster_queue     = var.temporal_cluster_queue
   temporal_namespace         = var.temporal_namespace
+  temporal_task_timeout      = var.temporal_task_timeout
 
   # Container environment variables
   tracecat_app_env                 = var.tracecat_app_env
