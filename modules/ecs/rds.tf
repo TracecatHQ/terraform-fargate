@@ -48,7 +48,7 @@ resource "aws_db_instance" "core_database" {
   engine                      = "postgres"
   engine_version              = "16.3"
   instance_class              = "${var.db_instance_class}.${var.db_instance_size}"
-  allocated_storage           = 5
+  allocated_storage           = var.db_allocated_storage
   storage_encrypted           = true
   storage_type                = "gp2"
   username                    = "postgres"

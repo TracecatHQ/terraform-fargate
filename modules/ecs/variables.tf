@@ -419,12 +419,17 @@ variable "caddy_memory" {
 
 variable "db_instance_class" {
   type    = string
-  default = "db.t3"
+  default = "db.t4g"
 }
 
 variable "db_instance_size" {
   type    = string
   default = "medium"
+}
+
+variable "db_allocated_storage" {
+  type    = string
+  default = "5"
 }
 
 ### RDS Settings

@@ -387,6 +387,11 @@ variable "db_instance_size" {
   default = "medium"
 }
 
+variable "db_allocated_storage" {
+  type    = string
+  default = "5"
+}
+
 ### RDS Settings
 
 variable "restore_from_snapshot" {
