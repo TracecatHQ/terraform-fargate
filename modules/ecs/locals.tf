@@ -108,6 +108,8 @@ locals {
       TRACECAT__CONTEXT_COMPRESSION_ENABLED      = var.context_compression_enabled
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
       TRACECAT__EXECUTOR_PAYLOAD_MAX_SIZE_BYTES  = var.executor_payload_max_size_bytes
+      TRACECAT__BLOB_STORAGE_PROTOCOL            = "s3"
+      TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS  = aws_s3_bucket.attachments.bucket
       # Redis
       REDIS_HOST = local.redis_host
       REDIS_PORT = local.redis_port
