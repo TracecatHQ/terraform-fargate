@@ -220,6 +220,12 @@ variable "tracecat_signing_secret_arn" {
   description = "The ARN of the secret containing the Tracecat signing secret"
 }
 
+variable "langfuse_credentials_arn" {
+  type        = string
+  description = "The ARN of the secret containing Langfuse credentials (optional)"
+  default     = null
+}
+
 variable "oauth_client_id_arn" {
   type        = string
   description = "The ARN of the secret containing the OAuth client ID (optional)"
