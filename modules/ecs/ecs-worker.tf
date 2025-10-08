@@ -75,7 +75,8 @@ resource "aws_ecs_service" "tracecat_worker" {
       port_name      = "worker"
       discovery_name = "worker-service"
       timeout {
-        per_request_timeout_seconds = 120
+        per_request_timeout_seconds = var.service_connect_request_timeout
+        idle_timeout_seconds        = var.service_connect_idle_timeout
       }
       client_alias {
         port     = 8001
@@ -87,7 +88,8 @@ resource "aws_ecs_service" "tracecat_worker" {
       port_name      = "metrics"
       discovery_name = "metrics-service"
       timeout {
-        per_request_timeout_seconds = 120
+        per_request_timeout_seconds = var.service_connect_request_timeout
+        idle_timeout_seconds        = var.service_connect_idle_timeout
       }
       client_alias {
         port     = 9000

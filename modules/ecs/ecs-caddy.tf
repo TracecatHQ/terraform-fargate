@@ -33,6 +33,16 @@ cat > /etc/caddy/Caddyfile <<'BASECONFIG'
 :80 {
   handle_path /api* {
     reverse_proxy http://api-service:8000 {
+      # Disable proxy response buffering so SSE events flush immediately.
+      # This complements (rather than replaces) the SSE headers FastAPI emits
+      # like "Cache-Control: no-cache" or "Connection: keep-alive"; those still
+      # originate from the application, while Caddy ensures it forwards each
+      # chunk without delay. With Caddy v2, setting "flush_interval -1" simply
+      # turns off the timer that batches writes; non-streaming responses still
+      # flush once at completion, so applying it broadly under /api does not
+      # break regular JSON responses—at worst it can add a few extra syscalls
+      # for large payloads, which is negligible compared to keeping SSE alive.
+      flush_interval -1
       header_up X-Forwarded-For {remote_host}
       header_up X-Real-IP {remote_host}
       header_up X-Forwarded-Proto {scheme}
@@ -114,6 +124,10 @@ resource "aws_ecs_service" "tracecat_caddy" {
     service {
       port_name      = "caddy"
       discovery_name = "caddy-service"
+      timeout {
+        per_request_timeout_seconds = var.service_connect_request_timeout
+        idle_timeout_seconds        = var.service_connect_idle_timeout
+      }
       client_alias {
         port     = 80
         dns_name = "caddy-service"

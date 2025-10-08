@@ -79,7 +79,8 @@ resource "aws_ecs_service" "temporal_service" {
       port_name      = "temporal"
       discovery_name = "temporal-service"
       timeout {
-        per_request_timeout_seconds = 120
+        per_request_timeout_seconds = var.service_connect_request_timeout
+        idle_timeout_seconds        = var.service_connect_idle_timeout
       }
       client_alias {
         port     = 7233
