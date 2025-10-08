@@ -8,7 +8,6 @@ resource "aws_alb" "this" {
 
   idle_timeout               = var.alb_idle_timeout
   enable_http2               = var.enable_http2
-  enable_deletion_protection = false
   drop_invalid_header_fields = false
 
   tags = {
