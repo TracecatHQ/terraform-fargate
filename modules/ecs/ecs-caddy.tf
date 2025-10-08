@@ -33,6 +33,8 @@ cat > /etc/caddy/Caddyfile <<'BASECONFIG'
 :80 {
   handle_path /api* {
     reverse_proxy http://api-service:8000 {
+      # Disable proxy response buffering so SSE events are flushed immediately
+      flush_interval -1
       header_up X-Forwarded-For {remote_host}
       header_up X-Real-IP {remote_host}
       header_up X-Forwarded-Proto {scheme}
