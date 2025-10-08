@@ -98,10 +98,6 @@ resource "aws_ecs_service" "temporal_ui_service" {
     service {
       port_name      = "temporal-ui"
       discovery_name = "temporal-ui-service"
-      timeout {
-        per_request_timeout_seconds = var.service_connect_request_timeout
-        idle_timeout_seconds        = var.service_connect_idle_timeout
-      }
       client_alias {
         port     = 8080
         dns_name = "temporal-ui-service"

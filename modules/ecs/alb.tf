@@ -6,14 +6,6 @@ resource "aws_alb" "this" {
   subnets            = var.public_subnet_ids
   security_groups    = [aws_security_group.alb.id]
 
-  # Deletion protection is intentionally left at the AWS default (disabled).
-  # This attribute only blocks full load balancer deletion and does not
-  # influence our ability to roll out attribute updates (for example the idle
-  # timeout tuning below), so there is no need to force-set it to false.
-  idle_timeout               = var.alb_idle_timeout
-  enable_http2               = var.enable_http2
-  drop_invalid_header_fields = false
-
   tags = {
     Name = "tracecat-alb"
   }
@@ -28,16 +20,14 @@ resource "aws_alb_target_group" "caddy" {
   target_type = "ip"
 
   health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 3
-    interval            = 15
-    timeout             = 10
+    healthy_threshold   = "3"
+    interval            = "30"
     protocol            = "HTTP"
     matcher             = "200"
-    path                = "/health"
+    timeout             = "3"
+    path                = "/"
+    unhealthy_threshold = "2"
   }
-
-  deregistration_delay = 300
 }
 
 # HTTPS Listener

@@ -45,10 +45,6 @@ module "ecs" {
   temporal_ui_image         = var.temporal_ui_image
   temporal_ui_image_tag     = var.temporal_ui_image_tag
   force_new_deployment      = var.force_new_deployment
-  alb_idle_timeout                = var.alb_idle_timeout
-  service_connect_request_timeout = var.service_connect_request_timeout
-  service_connect_idle_timeout    = var.service_connect_idle_timeout
-  enable_http2                    = var.enable_http2
 
   # Temporal configuration
   disable_temporal_ui        = var.disable_temporal_ui

@@ -74,8 +74,7 @@ resource "aws_ecs_service" "tracecat_api" {
       port_name      = "api"
       discovery_name = "api-service"
       timeout {
-        per_request_timeout_seconds = var.service_connect_request_timeout
-        idle_timeout_seconds        = var.service_connect_idle_timeout
+        per_request_timeout_seconds = 120
       }
       client_alias {
         port     = 8000

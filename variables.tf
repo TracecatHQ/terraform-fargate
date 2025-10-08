@@ -91,30 +91,6 @@ variable "force_new_deployment" {
   default     = false
 }
 
-variable "alb_idle_timeout" {
-  type        = number
-  description = "ALB idle timeout in seconds for streaming connections"
-  default     = 3600
-}
-
-variable "service_connect_request_timeout" {
-  type        = number
-  description = "Service Connect per-request timeout in seconds"
-  default     = 300
-}
-
-variable "service_connect_idle_timeout" {
-  type        = number
-  description = "Service Connect idle timeout in seconds"
-  default     = 3600
-}
-
-variable "enable_http2" {
-  type        = bool
-  description = "Enable HTTP/2 on ALB (disable for better SSE compatibility)"
-  default     = false
-}
-
 ### Temporal configuration
 
 variable "disable_temporal_ui" {
