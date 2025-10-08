@@ -6,6 +6,11 @@ resource "aws_alb" "this" {
   subnets            = var.public_subnet_ids
   security_groups    = [aws_security_group.alb.id]
 
+  idle_timeout               = var.alb_idle_timeout
+  enable_http2               = var.enable_http2
+  enable_deletion_protection = false
+  drop_invalid_header_fields = false
+
   tags = {
     Name = "tracecat-alb"
   }
@@ -20,14 +25,16 @@ resource "aws_alb_target_group" "caddy" {
   target_type = "ip"
 
   health_check {
-    healthy_threshold   = "3"
-    interval            = "30"
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+    interval            = 15
+    timeout             = 10
     protocol            = "HTTP"
     matcher             = "200"
-    timeout             = "3"
-    path                = "/"
-    unhealthy_threshold = "2"
+    path                = "/health"
   }
+
+  deregistration_delay = 300
 }
 
 # HTTPS Listener

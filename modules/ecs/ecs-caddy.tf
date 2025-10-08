@@ -114,6 +114,10 @@ resource "aws_ecs_service" "tracecat_caddy" {
     service {
       port_name      = "caddy"
       discovery_name = "caddy-service"
+      timeout {
+        per_request_timeout_seconds = var.service_connect_request_timeout
+        idle_timeout_seconds        = var.service_connect_idle_timeout
+      }
       client_alias {
         port     = 80
         dns_name = "caddy-service"
