@@ -342,7 +342,18 @@ variable "executor_memory" {
 
 variable "executor_client_timeout" {
   type    = string
-  default = "120"
+  default = "900"
+}
+
+variable "executor_service_connect_timeout_seconds" {
+  type        = number
+  description = "Per-request timeout in seconds for ECS Service Connect traffic to the executor service (maximum 3600 seconds)"
+  default     = 900
+
+  validation {
+    condition     = var.executor_service_connect_timeout_seconds >= 1 && var.executor_service_connect_timeout_seconds <= 3600
+    error_message = "Executor Service Connect per-request timeout must be between 1 and 3600 seconds."
+  }
 }
 
 variable "executor_payload_max_size_bytes" {
