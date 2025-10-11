@@ -1,4 +1,7 @@
 # Application Load Balancer
+# Note: ALB is AWS-managed and does not expose Envoy tuning knobs; keep-alive
+# behaviour for Service Connect SSE traffic must be handled in the downstream
+# proxies (Caddy and the managed Envoy sidecars).
 resource "aws_alb" "this" {
   name               = "tracecat-alb"
   internal           = var.is_internal
