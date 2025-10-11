@@ -32,7 +32,45 @@ resource "aws_ecs_task_definition" "caddy_task_definition" {
 cat > /etc/caddy/Caddyfile <<'BASECONFIG'
 :80 {
   handle_path /api* {
+    header {
+      Cache-Control "no-cache, no-transform"
+      Pragma "no-cache"
+      X-Accel-Buffering "no"
+    }
     reverse_proxy http://api-service:8000 {
+      flush_interval -1
+      header_up Cache-Control "no-cache, no-transform"
+      header_up Pragma "no-cache"
+      header_up X-Accel-Buffering "no"
+      header_up Connection "keep-alive"
+      header_up Keep-Alive "timeout=120"
+      header_down Connection "keep-alive"
+      header_down Keep-Alive "timeout=120"
+      header_down -Content-Length
+      header_up X-Forwarded-For {remote_host}
+      header_up X-Real-IP {remote_host}
+      header_up X-Forwarded-Proto {scheme}
+      header_up X-Forwarded-Host {host}
+    }
+  }
+
+  handle /vercel* {
+    header {
+      Cache-Control "no-cache, no-transform"
+      Pragma "no-cache"
+      X-Accel-Buffering "no"
+    }
+    reverse_proxy http://api-service:8000 {
+      flush_interval -1
+      header_up Cache-Control "no-cache, no-transform"
+      header_up Pragma "no-cache"
+      header_up X-Accel-Buffering "no"
+      header_up Connection "keep-alive"
+      header_up Keep-Alive "timeout=120"
+      header_down Connection "keep-alive"
+      header_down Keep-Alive "timeout=120"
+      header_down -Content-Length
+      header_down Content-Type "text/event-stream"
       header_up X-Forwarded-For {remote_host}
       header_up X-Real-IP {remote_host}
       header_up X-Forwarded-Proto {scheme}
