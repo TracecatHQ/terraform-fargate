@@ -64,6 +64,10 @@ resource "aws_ecs_service" "tracecat_ui" {
     service {
       port_name      = "ui"
       discovery_name = "ui-service"
+      timeout {
+        per_request_timeout_seconds = 300
+        idle_timeout_seconds        = 300
+      }
       client_alias {
         port     = 3000
         dns_name = "ui-service"
