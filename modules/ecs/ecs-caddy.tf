@@ -58,6 +58,20 @@ fi
 
 # Append final UI config
 cat >> /etc/caddy/Caddyfile <<'UICONFIG'
+  handle_path /vercel* {
+    header {
+      Cache-Control "no-cache, no-transform"
+      Pragma "no-cache"
+      X-Accel-Buffering "no"
+    }
+    reverse_proxy http://ui-service:3000 {
+      flush_interval 0s
+      header_up Cache-Control "no-cache, no-transform"
+      header_up Pragma "no-cache"
+      header_up X-Accel-Buffering "no"
+    }
+  }
+
   reverse_proxy http://ui-service:3000
 }
 UICONFIG
