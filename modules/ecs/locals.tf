@@ -110,6 +110,7 @@ locals {
       TRACECAT__EXECUTOR_PAYLOAD_MAX_SIZE_BYTES  = var.executor_payload_max_size_bytes
       TRACECAT__BLOB_STORAGE_PROTOCOL            = "s3"
       TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS  = aws_s3_bucket.attachments.bucket
+      RAY_RUNTIME_ENV_UV_CACHE_SIZE_GB           = var.executor_ray_runtime_env_uv_cache_size_gb
       # Redis
       REDIS_HOST = local.redis_host
       REDIS_PORT = local.redis_port

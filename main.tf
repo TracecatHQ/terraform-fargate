@@ -118,6 +118,7 @@ module "ecs" {
   executor_client_timeout         = var.executor_client_timeout
   executor_service_connect_timeout_seconds = var.executor_service_connect_timeout_seconds
   executor_payload_max_size_bytes = var.executor_payload_max_size_bytes
+  executor_ray_runtime_env_uv_cache_size_gb = var.executor_ray_runtime_env_uv_cache_size_gb
   ui_cpu                          = var.ui_cpu
   ui_memory                       = var.ui_memory
   temporal_cpu                    = var.temporal_cpu

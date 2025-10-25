@@ -402,6 +402,12 @@ variable "executor_payload_max_size_bytes" {
   description = "Maximum size of a payload in bytes the executor can return (default: 2MB)"
 }
 
+variable "executor_ray_runtime_env_uv_cache_size_gb" {
+  type        = string
+  default     = "5"
+  description = "Soft cap (in GiB) for Ray's uv runtime-env cache inside the executor container"
+}
+
 variable "temporal_cpu" {
   type    = string
   default = "2048"
