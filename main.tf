@@ -58,6 +58,7 @@ module "ecs" {
   tracecat_app_env                 = var.tracecat_app_env
   log_level                        = var.log_level
   temporal_log_level               = var.temporal_log_level
+  feature_flags                    = var.feature_flags
   context_compression_enabled      = var.context_compression_enabled
   context_compression_threshold_kb = var.context_compression_threshold_kb
 

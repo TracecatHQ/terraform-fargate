@@ -191,6 +191,13 @@ variable "temporal_log_level" {
   default = "warn"
 }
 
+# NOTE: Modifying feature flags requires a Tracecat Enterprise license.
+variable "feature_flags" {
+  type        = string
+  description = "Comma separated list of Tracecat feature flags to enable. Requires Tracecat Enterprise license to modify."
+  default     = ""
+}
+
 ### Database Connection Pool
 
 variable "db_max_overflow" {
