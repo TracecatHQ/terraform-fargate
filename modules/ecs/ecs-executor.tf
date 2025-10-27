@@ -101,4 +101,8 @@ resource "aws_ecs_service" "tracecat_executor" {
       }
     }
   }
+
+  depends_on = [
+    aws_elasticache_replication_group.redis
+  ]
 }

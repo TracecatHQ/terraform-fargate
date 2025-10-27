@@ -119,6 +119,7 @@ resource "aws_ecs_service" "tracecat_worker" {
 
   depends_on = [
     aws_ecs_service.temporal_service,
-    aws_ecs_service.tracecat_executor
+    aws_ecs_service.tracecat_executor,
+    aws_elasticache_replication_group.redis
   ]
 }

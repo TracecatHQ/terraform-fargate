@@ -85,6 +85,7 @@ resource "aws_ecs_service" "tracecat_ui" {
   }
 
   depends_on = [
-    aws_ecs_service.tracecat_api
+    aws_ecs_service.tracecat_api,
+    aws_elasticache_replication_group.redis
   ]
 }
