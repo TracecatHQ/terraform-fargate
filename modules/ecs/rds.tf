@@ -43,6 +43,23 @@ data "aws_db_snapshot" "temporal_snapshots" {
   }
 }
 
+resource "aws_db_subnet_group" "tracecat_db_subnet" {
+  name       = "tracecat-db-subnet"
+  subnet_ids = var.private_subnet_ids
+}
+
+resource "time_sleep" "wait_for_rds_dependencies" {
+  depends_on = [
+    aws_db_subnet_group.tracecat_db_subnet,
+    aws_security_group.core,
+    aws_security_group.core_db,
+    aws_security_group.temporal,
+    aws_security_group.temporal_db
+  ]
+
+  create_duration = "30s"
+}
+
 resource "aws_db_instance" "core_database" {
   identifier                  = "core-database"
   engine                      = "postgres"
@@ -69,6 +86,8 @@ resource "aws_db_instance" "core_database" {
   performance_insights_enabled = var.rds_performance_insights_enabled
   auto_minor_version_upgrade   = var.rds_auto_minor_version_upgrade
   database_insights_mode       = var.rds_database_insights_mode
+
+  depends_on = [time_sleep.wait_for_rds_dependencies]
 
   lifecycle {
     ignore_changes = [
@@ -105,17 +124,14 @@ resource "aws_db_instance" "temporal_database" {
   performance_insights_enabled = var.rds_performance_insights_enabled
   auto_minor_version_upgrade   = var.rds_auto_minor_version_upgrade
 
+  depends_on = [time_sleep.wait_for_rds_dependencies]
+
   lifecycle {
     ignore_changes = [
       snapshot_identifier,
       final_snapshot_identifier
     ]
   }
-}
-
-resource "aws_db_subnet_group" "tracecat_db_subnet" {
-  name       = "tracecat-db-subnet"
-  subnet_ids = var.private_subnet_ids
 }
 
 # Local variables for database hostnames
