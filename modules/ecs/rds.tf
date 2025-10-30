@@ -63,7 +63,7 @@ resource "time_sleep" "wait_for_rds_dependencies" {
 resource "aws_db_instance" "core_database" {
   identifier                  = "core-database"
   engine                      = "postgres"
-  engine_version              = "16.3"
+  engine_version              = var.db_engine_version
   instance_class              = "${var.db_instance_class}.${var.db_instance_size}"
   allocated_storage           = var.db_allocated_storage
   storage_encrypted           = true

@@ -131,6 +131,7 @@ module "ecs" {
   db_instance_class               = var.db_instance_class
   db_instance_size                = var.db_instance_size
   db_allocated_storage            = var.db_allocated_storage
+  db_engine_version               = var.db_engine_version
 
   # Metrics configuration
   enable_metrics             = var.enable_metrics

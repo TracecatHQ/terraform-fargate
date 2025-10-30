@@ -422,6 +422,12 @@ variable "db_allocated_storage" {
   default = "5"
 }
 
+variable "db_engine_version" {
+  type        = string
+  description = "Exact Postgres engine version for the core RDS instance (e.g. 16.10). Override per workspace if a different minor is required."
+  default     = "16.10"
+}
+
 ### RDS Settings
 
 variable "restore_from_snapshot" {
