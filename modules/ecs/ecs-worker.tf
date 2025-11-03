@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "worker_task_definition" {
     {
       name    = "TracecatWorkerContainer"
       image   = "${var.tracecat_image}:${local.tracecat_image_tag}"
-      command = ["python", "tracecat/dsl/worker.py"]
+      command = ["python", "-m", "tracecat.dsl.worker"]
       portMappings = [
         {
           containerPort = 8001
