@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "caddy_task_definition" {
   container_definitions = jsonencode([
     {
       name  = "TracecatCaddyContainer"
-      image = "caddy:2.8.4-alpine"
+      image = "caddy:2.10.2-alpine"
       portMappings = [
         {
           containerPort = 80
