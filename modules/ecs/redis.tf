@@ -13,6 +13,11 @@ resource "aws_elasticache_user" "default" {
   authentication_mode {
     type = "no-password-required"
   }
+
+  lifecycle {
+    # Provider bug: AWS returns "no-password" so Terraform thinks auth changed each plan.
+    ignore_changes = [authentication_mode]
+  }
 }
 
 # Application user (no-password-required)
@@ -25,6 +30,11 @@ resource "aws_elasticache_user" "app_user" {
   # No password; access allowed purely by VPC / SG controls
   authentication_mode {
     type = "no-password-required"
+  }
+
+  lifecycle {
+    # Provider bug: AWS returns "no-password" so Terraform thinks auth changed each plan.
+    ignore_changes = [authentication_mode]
   }
 }
 
