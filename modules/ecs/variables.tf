@@ -112,7 +112,7 @@ variable "temporal_server_image" {
 
 variable "temporal_server_image_tag" {
   type    = string
-  default = "1.24.2"
+  default = "1.29.1"
 }
 
 variable "temporal_ui_image" {
@@ -122,7 +122,7 @@ variable "temporal_ui_image" {
 
 variable "temporal_ui_image_tag" {
   type    = string
-  default = "2.32.0"
+  default = "2.43.3"
 }
 
 variable "force_new_deployment" {
