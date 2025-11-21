@@ -43,9 +43,9 @@ cat > /etc/caddy/Caddyfile <<'BASECONFIG'
       header_up Pragma "no-cache"
       header_up X-Accel-Buffering "no"
       header_up Connection "keep-alive"
-      header_up Keep-Alive "timeout=120"
+      header_up Keep-Alive "timeout=300"
       header_down Connection "keep-alive"
-      header_down Keep-Alive "timeout=120"
+      header_down Keep-Alive "timeout=300"
       header_down -Content-Length
       header_up X-Forwarded-For {remote_host}
       header_up X-Real-IP {remote_host}
@@ -66,9 +66,9 @@ cat > /etc/caddy/Caddyfile <<'BASECONFIG'
       header_up Pragma "no-cache"
       header_up X-Accel-Buffering "no"
       header_up Connection "keep-alive"
-      header_up Keep-Alive "timeout=120"
+      header_up Keep-Alive "timeout=300"
       header_down Connection "keep-alive"
-      header_down Keep-Alive "timeout=120"
+      header_down Keep-Alive "timeout=300"
       header_down -Content-Length
       header_down Content-Type "text/event-stream"
       header_up X-Forwarded-For {remote_host}
