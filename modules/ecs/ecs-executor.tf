@@ -65,7 +65,7 @@ resource "aws_ecs_service" "tracecat_executor" {
   cluster              = aws_ecs_cluster.tracecat_cluster.id
   task_definition      = aws_ecs_task_definition.executor_task_definition.arn
   launch_type          = "FARGATE"
-  desired_count        = 1
+  desired_count        = var.executor_desired_count
   force_new_deployment = var.force_new_deployment
 
   network_configuration {

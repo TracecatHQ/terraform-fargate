@@ -387,6 +387,12 @@ variable "executor_memory" {
   default = "8192"
 }
 
+variable "executor_desired_count" {
+  type        = number
+  description = "Desired number of executor instances to run"
+  default     = 1
+}
+
 variable "executor_client_timeout" {
   type    = string
   default = "900"
