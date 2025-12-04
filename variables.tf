@@ -72,7 +72,7 @@ variable "temporal_server_image" {
 
 variable "temporal_server_image_tag" {
   type    = string
-  default = "1.24.2"
+  default = "1.29.1"
 }
 
 variable "temporal_ui_image" {
