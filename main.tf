@@ -86,7 +86,6 @@ module "ecs" {
   tracecat_db_encryption_key_arn = var.tracecat_db_encryption_key_arn
   tracecat_service_key_arn       = var.tracecat_service_key_arn
   tracecat_signing_secret_arn    = var.tracecat_signing_secret_arn
-  langfuse_credentials_arn       = var.langfuse_credentials_arn
 
   # Authentication
   auth_types            = var.auth_types

@@ -134,7 +134,6 @@ resource "aws_iam_policy" "secrets_access" {
           var.tracecat_db_encryption_key_arn,
           var.tracecat_service_key_arn,
           var.tracecat_signing_secret_arn,
-          var.langfuse_credentials_arn,
           var.oauth_client_id_arn,
           var.oauth_client_secret_arn,
           var.saml_idp_metadata_url_arn,

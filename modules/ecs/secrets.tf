@@ -6,7 +6,6 @@
 # Optional secrets:
 # 1. OAUTH_CLIENT_ID
 # 2. OAUTH_CLIENT_SECRET
-# 3. Langfuse credentials (LANGFUSE_SECRET_KEY, LANGFUSE_PUBLIC_KEY, LANGFUSE_HOST)
 
 ### Required secrets
 data "aws_secretsmanager_secret" "tracecat_db_encryption_key" {
@@ -52,12 +51,6 @@ data "aws_secretsmanager_secret" "temporal_auth_client_secret" {
   arn   = var.temporal_auth_client_secret_arn
 }
 
-# Langfuse credentials
-data "aws_secretsmanager_secret" "langfuse_credentials" {
-  count = var.langfuse_credentials_arn != null ? 1 : 0
-  arn   = var.langfuse_credentials_arn
-}
-
 ### Retrieve secret values
 
 # Tracecat secrets
@@ -99,11 +92,6 @@ data "aws_secretsmanager_secret_version" "temporal_auth_client_id" {
 data "aws_secretsmanager_secret_version" "temporal_auth_client_secret" {
   count     = var.temporal_auth_client_secret_arn != null ? 1 : 0
   secret_id = data.aws_secretsmanager_secret.temporal_auth_client_secret[0].id
-}
-
-data "aws_secretsmanager_secret_version" "langfuse_credentials" {
-  count     = var.langfuse_credentials_arn != null ? 1 : 0
-  secret_id = data.aws_secretsmanager_secret.langfuse_credentials[0].id
 }
 
 ### Database secrets
@@ -205,23 +193,5 @@ locals {
     local.temporal_auth_client_secret_secret,
   )
 
-  langfuse_credentials_secret = var.langfuse_credentials_arn != null ? [
-    {
-      name      = "LANGFUSE_SECRET_KEY"
-      valueFrom = "${data.aws_secretsmanager_secret_version.langfuse_credentials[0].arn}:LANGFUSE_SECRET_KEY::"
-    },
-    {
-      name      = "LANGFUSE_PUBLIC_KEY"
-      valueFrom = "${data.aws_secretsmanager_secret_version.langfuse_credentials[0].arn}:LANGFUSE_PUBLIC_KEY::"
-    },
-    {
-      name      = "LANGFUSE_HOST"
-      valueFrom = "${data.aws_secretsmanager_secret_version.langfuse_credentials[0].arn}:LANGFUSE_HOST::"
-    }
-  ] : []
-
-  executor_secrets = concat(
-    local.tracecat_base_secrets,
-    local.langfuse_credentials_secret,
-  )
+  executor_secrets = local.tracecat_base_secrets
 }
