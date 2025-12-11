@@ -198,33 +198,10 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
-  # AWS Managed Rules - PHP Application Rule Set
-  rule {
-    name     = "AWS-AWSManagedRulesPHPRuleSet"
-    priority = 5
-
-    override_action {
-      none {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesPHPRuleSet"
-        vendor_name = "AWS"
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "AWSManagedRulesPHPRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
-
   # Custom rule to block XSS threats except for attachment uploads
   rule {
     name     = "BlockXSSExceptAttachments"
-    priority = 6
+    priority = 5
 
     action {
       block {}
@@ -267,7 +244,7 @@ resource "aws_wafv2_web_acl" "this" {
   # Custom rule to block LFI threats except for attachment uploads
   rule {
     name     = "BlockLFIExceptAttachments"
-    priority = 7
+    priority = 6
 
     action {
       block {}
