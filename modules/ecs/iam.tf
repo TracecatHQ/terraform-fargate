@@ -149,11 +149,6 @@ resource "aws_iam_policy" "s3_registry_access" {
         Resource = [
           aws_s3_bucket.registry.arn
         ]
-        Condition = {
-          StringLike = {
-            "s3:prefix" = ["*"]
-          }
-        }
       }
     ]
   })
