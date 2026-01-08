@@ -108,29 +108,29 @@ module "ecs" {
   temporal_api_key_arn = var.temporal_api_key_arn
 
   # Compute / memory
-  api_cpu                         = var.api_cpu
-  api_memory                      = var.api_memory
-  worker_cpu                      = var.worker_cpu
-  worker_memory                   = var.worker_memory
-  worker_desired_count            = var.worker_desired_count
-  executor_cpu                    = var.executor_cpu
-  executor_memory                 = var.executor_memory
-  executor_desired_count          = var.executor_desired_count
-  executor_client_timeout         = var.executor_client_timeout
-  executor_payload_max_size_bytes = var.executor_payload_max_size_bytes
+  api_cpu                                   = var.api_cpu
+  api_memory                                = var.api_memory
+  worker_cpu                                = var.worker_cpu
+  worker_memory                             = var.worker_memory
+  worker_desired_count                      = var.worker_desired_count
+  executor_cpu                              = var.executor_cpu
+  executor_memory                           = var.executor_memory
+  executor_desired_count                    = var.executor_desired_count
+  executor_client_timeout                   = var.executor_client_timeout
+  executor_payload_max_size_bytes           = var.executor_payload_max_size_bytes
   executor_ray_runtime_env_uv_cache_size_gb = var.executor_ray_runtime_env_uv_cache_size_gb
-  ui_cpu                          = var.ui_cpu
-  ui_memory                       = var.ui_memory
-  temporal_cpu                    = var.temporal_cpu
-  temporal_memory                 = var.temporal_memory
-  temporal_client_rpc_timeout     = var.temporal_client_rpc_timeout
-  temporal_num_history_shards     = var.temporal_num_history_shards
-  caddy_cpu                       = var.caddy_cpu
-  caddy_memory                    = var.caddy_memory
-  db_instance_class               = var.db_instance_class
-  db_instance_size                = var.db_instance_size
-  db_allocated_storage            = var.db_allocated_storage
-  db_engine_version               = var.db_engine_version
+  ui_cpu                                    = var.ui_cpu
+  ui_memory                                 = var.ui_memory
+  temporal_cpu                              = var.temporal_cpu
+  temporal_memory                           = var.temporal_memory
+  temporal_client_rpc_timeout               = var.temporal_client_rpc_timeout
+  temporal_num_history_shards               = var.temporal_num_history_shards
+  caddy_cpu                                 = var.caddy_cpu
+  caddy_memory                              = var.caddy_memory
+  db_instance_class                         = var.db_instance_class
+  db_instance_size                          = var.db_instance_size
+  db_allocated_storage                      = var.db_allocated_storage
+  db_engine_version                         = var.db_engine_version
 
   # Metrics configuration
   enable_metrics             = var.enable_metrics

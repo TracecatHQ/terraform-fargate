@@ -25,10 +25,10 @@ locals {
   # Tracecat postgres env vars
   # See: https://github.com/TracecatHQ/tracecat/blob/abd5ff/tracecat/db/engine.py#L21
   tracecat_db_configs = {
-    TRACECAT__DB_USER      = "postgres"
-    TRACECAT__DB_PORT      = "5432"
-    TRACECAT__DB_NAME      = "postgres" # Hardcoded in RDS resource configs
-    TRACECAT__DB_PASS__ARN = data.aws_secretsmanager_secret_version.tracecat_db_password.arn
+    TRACECAT__DB_USER         = "postgres"
+    TRACECAT__DB_PORT         = "5432"
+    TRACECAT__DB_NAME         = "postgres" # Hardcoded in RDS resource configs
+    TRACECAT__DB_PASS__ARN    = data.aws_secretsmanager_secret_version.tracecat_db_password.arn
     TRACECAT__DB_MAX_OVERFLOW = var.db_max_overflow
     TRACECAT__DB_POOL_SIZE    = var.db_pool_size
     TRACECAT__DB_POOL_TIMEOUT = var.db_pool_timeout
@@ -66,6 +66,7 @@ locals {
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
       TRACECAT__BLOB_STORAGE_PROTOCOL            = "s3"
       TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS  = aws_s3_bucket.attachments.bucket
+      TRACECAT__BLOB_STORAGE_BUCKET_REGISTRY     = aws_s3_bucket.registry.bucket
       TRACECAT__FEATURE_FLAGS                    = var.feature_flags # Requires Tracecat Enterprise license to modify.
       # Redis
       REDIS_HOST = local.redis_host
@@ -118,6 +119,7 @@ locals {
       TRACECAT__DISABLE_NSJAIL                   = "true"
       TRACECAT__BLOB_STORAGE_PROTOCOL            = "s3"
       TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS  = aws_s3_bucket.attachments.bucket
+      TRACECAT__BLOB_STORAGE_BUCKET_REGISTRY     = aws_s3_bucket.registry.bucket
       TRACECAT__FEATURE_FLAGS                    = var.feature_flags # Requires Tracecat Enterprise license to modify.
       RAY_RUNTIME_ENV_UV_CACHE_SIZE_GB           = var.executor_ray_runtime_env_uv_cache_size_gb
       # Redis
@@ -130,12 +132,12 @@ locals {
 
   ui_env = [
     for k, v in {
-      NEXT_PUBLIC_API_URL    = local.public_api_url
-      NEXT_PUBLIC_APP_ENV    = var.tracecat_app_env
-      NEXT_PUBLIC_APP_URL    = local.public_app_url
-      NEXT_PUBLIC_AUTH_TYPES = var.auth_types
-      NEXT_SERVER_API_URL    = local.internal_api_url
-      NODE_ENV               = var.tracecat_app_env
+      NEXT_PUBLIC_API_URL     = local.public_api_url
+      NEXT_PUBLIC_APP_ENV     = var.tracecat_app_env
+      NEXT_PUBLIC_APP_URL     = local.public_app_url
+      NEXT_PUBLIC_AUTH_TYPES  = var.auth_types
+      NEXT_SERVER_API_URL     = local.internal_api_url
+      NODE_ENV                = var.tracecat_app_env
       TRACECAT__FEATURE_FLAGS = var.feature_flags # Requires Tracecat Enterprise license to modify.
       # Redis
       REDIS_HOST = local.redis_host

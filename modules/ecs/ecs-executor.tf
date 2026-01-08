@@ -84,7 +84,7 @@ resource "aws_ecs_service" "tracecat_executor" {
       port_name      = "executor"
       discovery_name = "executor-service"
       timeout {
-        per_request_timeout_seconds = 1200  # 20 minutes
+        per_request_timeout_seconds = 1200 # 20 minutes
       }
       client_alias {
         port     = 8002

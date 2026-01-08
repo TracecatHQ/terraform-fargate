@@ -72,6 +72,16 @@ output "s3_attachments_bucket_arn" {
   description = "The ARN of the S3 bucket used for attachments storage"
 }
 
+output "s3_registry_bucket_name" {
+  value       = aws_s3_bucket.registry.bucket
+  description = "The name of the S3 bucket used for registry storage"
+}
+
+output "s3_registry_bucket_arn" {
+  value       = aws_s3_bucket.registry.arn
+  description = "The ARN of the S3 bucket used for registry storage"
+}
+
 # Redis outputs
 
 output "redis_endpoint" {

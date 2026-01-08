@@ -119,6 +119,46 @@ resource "aws_iam_policy" "s3_attachments_access" {
   })
 }
 
+# S3 access policy for registry storage (read-only)
+resource "aws_iam_policy" "s3_registry_access" {
+  name        = "TracecatS3RegistryStoragePolicy"
+  description = "Policy for S3 registry storage read access"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowRegistryReadOperations"
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:HeadObject"
+        ]
+        Resource = [
+          "${aws_s3_bucket.registry.arn}/*"
+        ]
+      },
+      {
+        Sid    = "AllowRegistryBucketOperations"
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:HeadBucket"
+        ]
+        Resource = [
+          aws_s3_bucket.registry.arn
+        ]
+        Condition = {
+          StringLike = {
+            "s3:prefix" = ["*"]
+          }
+        }
+      }
+    ]
+  })
+}
+
 # Secrets access policy
 resource "aws_iam_policy" "secrets_access" {
   name        = "TracecatSecretsAccessPolicy"
@@ -265,6 +305,12 @@ resource "aws_iam_role_policy" "api_worker_task_db_access" {
 # Attach S3 policy to API/Worker task role
 resource "aws_iam_role_policy_attachment" "api_worker_task_s3" {
   policy_arn = aws_iam_policy.s3_attachments_access.arn
+  role       = aws_iam_role.api_worker_task.name
+}
+
+# Attach S3 registry policy to API/Worker task role
+resource "aws_iam_role_policy_attachment" "api_worker_task_s3_registry" {
+  policy_arn = aws_iam_policy.s3_registry_access.arn
   role       = aws_iam_role.api_worker_task.name
 }
 
