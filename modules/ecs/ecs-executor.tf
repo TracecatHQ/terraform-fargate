@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "executor_task_definition" {
     {
       name  = "TracecatExecutorContainer"
       image = "${var.tracecat_image}:${local.tracecat_image_tag}"
-      command = [
+      command = var.use_legacy_executor ? [
         "python",
         "-m",
         "uvicorn",
@@ -26,7 +26,7 @@ resource "aws_ecs_task_definition" "executor_task_definition" {
         "0.0.0.0",
         "--port",
         "8002"
-      ]
+      ] : ["python", "-m", "tracecat.executor.worker"]
       portMappings = [
         {
           containerPort = 8002

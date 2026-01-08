@@ -371,6 +371,12 @@ variable "worker_desired_count" {
   default     = 2
 }
 
+variable "use_legacy_executor" {
+  type        = bool
+  description = "Use legacy executor command (uvicorn HTTP server) for versions 0.53.x and below. Set to false for 0.54.0+."
+  default     = true
+}
+
 variable "executor_cpu" {
   type    = string
   default = "4096"
