@@ -113,6 +113,7 @@ module "ecs" {
   worker_cpu                                = var.worker_cpu
   worker_memory                             = var.worker_memory
   worker_desired_count                      = var.worker_desired_count
+  use_legacy_executor                       = var.use_legacy_executor
   executor_cpu                              = var.executor_cpu
   executor_memory                           = var.executor_memory
   executor_desired_count                    = var.executor_desired_count
