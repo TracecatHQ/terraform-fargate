@@ -270,11 +270,15 @@ resource "aws_vpc_endpoint" "s3" {
           "s3:ListBucket",
           "s3:GetBucketLocation",
           "s3:PutObjectTagging",
-          "s3:GetObjectTagging"
+          "s3:GetObjectTagging",
+          "s3:HeadObject",
+          "s3:HeadBucket"
         ]
         Resource = [
           aws_s3_bucket.attachments.arn,
-          "${aws_s3_bucket.attachments.arn}/*"
+          "${aws_s3_bucket.attachments.arn}/*",
+          aws_s3_bucket.registry.arn,
+          "${aws_s3_bucket.registry.arn}/*"
         ]
       }
     ]
