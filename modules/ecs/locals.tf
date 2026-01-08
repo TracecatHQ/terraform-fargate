@@ -57,9 +57,11 @@ locals {
       TRACECAT__AUTH_SUPERADMIN_EMAIL            = var.auth_superadmin_email
       TRACECAT__AUTH_TYPES                       = var.auth_types
       TRACECAT__DB_ENDPOINT                      = local.core_db_hostname
+      TRACECAT__EXECUTOR_BACKEND                 = "direct"
       TRACECAT__EXECUTOR_URL                     = local.internal_executor_url
       TRACECAT__PUBLIC_API_URL                   = local.public_api_url
       TRACECAT__PUBLIC_APP_URL                   = local.public_app_url
+      TRACECAT__UNIFIED_AGENT_STREAMING_ENABLED  = "false"
       TRACECAT__CONTEXT_COMPRESSION_ENABLED      = var.context_compression_enabled
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
       TRACECAT__BLOB_STORAGE_PROTOCOL            = "s3"
@@ -86,6 +88,7 @@ locals {
       TRACECAT__API_URL                          = local.internal_api_url
       TRACECAT__APP_ENV                          = var.tracecat_app_env
       TRACECAT__DB_ENDPOINT                      = local.core_db_hostname
+      TRACECAT__EXECUTOR_BACKEND                 = "direct"
       TRACECAT__EXECUTOR_CLIENT_TIMEOUT          = var.executor_client_timeout
       TRACECAT__EXECUTOR_URL                     = local.internal_executor_url
       TRACECAT__PUBLIC_API_URL                   = local.public_api_url
@@ -105,11 +108,14 @@ locals {
   executor_env = [
     for k, v in merge({
       LOG_LEVEL                                  = var.log_level
+      TRACECAT__API_URL                          = local.internal_api_url
       TRACECAT__APP_ENV                          = var.tracecat_app_env
       TRACECAT__DB_ENDPOINT                      = local.core_db_hostname
       TRACECAT__CONTEXT_COMPRESSION_ENABLED      = var.context_compression_enabled
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
       TRACECAT__EXECUTOR_PAYLOAD_MAX_SIZE_BYTES  = var.executor_payload_max_size_bytes
+      TRACECAT__EXECUTOR_QUEUE                   = "shared-action-queue"
+      TRACECAT__DISABLE_NSJAIL                   = "true"
       TRACECAT__BLOB_STORAGE_PROTOCOL            = "s3"
       TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS  = aws_s3_bucket.attachments.bucket
       TRACECAT__FEATURE_FLAGS                    = var.feature_flags # Requires Tracecat Enterprise license to modify.
