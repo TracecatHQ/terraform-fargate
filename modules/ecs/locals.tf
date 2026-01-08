@@ -109,6 +109,12 @@ locals {
   executor_env = [
     for k, v in merge({
       LOG_LEVEL                                  = var.log_level
+      TEMPORAL__CLIENT_RPC_TIMEOUT               = var.temporal_client_rpc_timeout
+      TEMPORAL__TASK_TIMEOUT                     = var.temporal_task_timeout
+      TEMPORAL__CLUSTER_NAMESPACE                = local.temporal_namespace
+      TEMPORAL__CLUSTER_QUEUE                    = local.temporal_cluster_queue
+      TEMPORAL__CLUSTER_URL                      = local.temporal_cluster_url
+      TEMPORAL__API_KEY__ARN                     = local.temporal_api_key_arn
       TRACECAT__API_URL                          = local.internal_api_url
       TRACECAT__APP_ENV                          = var.tracecat_app_env
       TRACECAT__DB_ENDPOINT                      = local.core_db_hostname
