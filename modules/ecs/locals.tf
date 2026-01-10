@@ -66,14 +66,14 @@ locals {
       TRACECAT__CONTEXT_COMPRESSION_THRESHOLD_KB = var.context_compression_threshold_kb
       TRACECAT__BLOB_STORAGE_PROTOCOL            = "s3"
       TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS  = aws_s3_bucket.attachments.bucket
-      TRACECAT__BLOB_STORAGE_BUCKET_REGISTRY     = aws_s3_bucket.registry.bucket
+      TRACECAT__BLOB_STORAGE_BUCKET_REGISTRY     = var.use_legacy_executor ? null : aws_s3_bucket.registry[0].bucket
       TRACECAT__FEATURE_FLAGS                    = var.feature_flags # Requires Tracecat Enterprise license to modify.
       # Redis
       REDIS_HOST = local.redis_host
       REDIS_PORT = local.redis_port
       REDIS_URL  = local.redis_url
     }, local.tracecat_db_configs) :
-    { name = k, value = tostring(v) }
+    { name = k, value = tostring(v) } if v != null
   ]
 
   worker_env = [
@@ -125,7 +125,7 @@ locals {
       TRACECAT__DISABLE_NSJAIL                   = "true"
       TRACECAT__BLOB_STORAGE_PROTOCOL            = "s3"
       TRACECAT__BLOB_STORAGE_BUCKET_ATTACHMENTS  = aws_s3_bucket.attachments.bucket
-      TRACECAT__BLOB_STORAGE_BUCKET_REGISTRY     = aws_s3_bucket.registry.bucket
+      TRACECAT__BLOB_STORAGE_BUCKET_REGISTRY     = var.use_legacy_executor ? null : aws_s3_bucket.registry[0].bucket
       TRACECAT__FEATURE_FLAGS                    = var.feature_flags # Requires Tracecat Enterprise license to modify.
       RAY_RUNTIME_ENV_UV_CACHE_SIZE_GB           = var.executor_ray_runtime_env_uv_cache_size_gb
       # Redis
@@ -133,7 +133,7 @@ locals {
       REDIS_PORT = local.redis_port
       REDIS_URL  = local.redis_url
     }, local.tracecat_db_configs, local.tracecat_db_configs_executor) :
-    { name = k, value = tostring(v) }
+    { name = k, value = tostring(v) } if v != null
   ]
 
   ui_env = [

@@ -73,13 +73,13 @@ output "s3_attachments_bucket_arn" {
 }
 
 output "s3_registry_bucket_name" {
-  value       = aws_s3_bucket.registry.bucket
-  description = "The name of the S3 bucket used for registry storage"
+  value       = var.use_legacy_executor ? null : aws_s3_bucket.registry[0].bucket
+  description = "The name of the S3 bucket used for registry storage (null when use_legacy_executor is true)"
 }
 
 output "s3_registry_bucket_arn" {
-  value       = aws_s3_bucket.registry.arn
-  description = "The ARN of the S3 bucket used for registry storage"
+  value       = var.use_legacy_executor ? null : aws_s3_bucket.registry[0].arn
+  description = "The ARN of the S3 bucket used for registry storage (null when use_legacy_executor is true)"
 }
 
 # Redis outputs

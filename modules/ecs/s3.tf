@@ -151,14 +151,16 @@ resource "aws_s3_bucket_cors_configuration" "attachments" {
   }
 }
 
-# Registry bucket
+# Registry bucket (only for non-legacy executor - 0.54.0+)
 resource "random_id" "registry_bucket_suffix" {
+  count       = var.use_legacy_executor ? 0 : 1
   byte_length = 4
 }
 
 # S3 bucket for Tracecat registry
 resource "aws_s3_bucket" "registry" {
-  bucket = "tracecat-registry-${var.tracecat_app_env}-${random_id.registry_bucket_suffix.hex}"
+  count  = var.use_legacy_executor ? 0 : 1
+  bucket = "tracecat-registry-${var.tracecat_app_env}-${random_id.registry_bucket_suffix[0].hex}"
 
   tags = {
     Name        = "Tracecat registry storage"
@@ -171,7 +173,8 @@ resource "aws_s3_bucket" "registry" {
 
 # Block public access completely
 resource "aws_s3_bucket_public_access_block" "registry" {
-  bucket = aws_s3_bucket.registry.id
+  count  = var.use_legacy_executor ? 0 : 1
+  bucket = aws_s3_bucket.registry[0].id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -181,7 +184,8 @@ resource "aws_s3_bucket_public_access_block" "registry" {
 
 # Enable versioning for data protection
 resource "aws_s3_bucket_versioning" "registry" {
-  bucket = aws_s3_bucket.registry.id
+  count  = var.use_legacy_executor ? 0 : 1
+  bucket = aws_s3_bucket.registry[0].id
   versioning_configuration {
     status = "Enabled"
   }
@@ -189,7 +193,8 @@ resource "aws_s3_bucket_versioning" "registry" {
 
 # Server-side encryption
 resource "aws_s3_bucket_server_side_encryption_configuration" "registry" {
-  bucket = aws_s3_bucket.registry.id
+  count  = var.use_legacy_executor ? 0 : 1
+  bucket = aws_s3_bucket.registry[0].id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -201,7 +206,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "registry" {
 
 # Lifecycle policy for cost optimization
 resource "aws_s3_bucket_lifecycle_configuration" "registry" {
-  bucket = aws_s3_bucket.registry.id
+  count  = var.use_legacy_executor ? 0 : 1
+  bucket = aws_s3_bucket.registry[0].id
 
   rule {
     id     = "registry_lifecycle"
@@ -236,7 +242,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "registry" {
 
 # Bucket policy for secure access (read-only for executor)
 resource "aws_s3_bucket_policy" "registry" {
-  bucket = aws_s3_bucket.registry.id
+  count  = var.use_legacy_executor ? 0 : 1
+  bucket = aws_s3_bucket.registry[0].id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -252,8 +259,8 @@ resource "aws_s3_bucket_policy" "registry" {
           "s3:ListBucket"
         ]
         Resource = [
-          "${aws_s3_bucket.registry.arn}/*",
-          aws_s3_bucket.registry.arn
+          "${aws_s3_bucket.registry[0].arn}/*",
+          aws_s3_bucket.registry[0].arn
         ]
       },
       {
@@ -264,8 +271,8 @@ resource "aws_s3_bucket_policy" "registry" {
         }
         Action = "s3:*"
         Resource = [
-          aws_s3_bucket.registry.arn,
-          "${aws_s3_bucket.registry.arn}/*"
+          aws_s3_bucket.registry[0].arn,
+          "${aws_s3_bucket.registry[0].arn}/*"
         ]
         Condition = {
           Bool = {

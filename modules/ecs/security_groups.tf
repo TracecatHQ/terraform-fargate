@@ -274,12 +274,16 @@ resource "aws_vpc_endpoint" "s3" {
           "s3:HeadObject",
           "s3:HeadBucket"
         ]
-        Resource = [
-          aws_s3_bucket.attachments.arn,
-          "${aws_s3_bucket.attachments.arn}/*",
-          aws_s3_bucket.registry.arn,
-          "${aws_s3_bucket.registry.arn}/*"
-        ]
+        Resource = concat(
+          [
+            aws_s3_bucket.attachments.arn,
+            "${aws_s3_bucket.attachments.arn}/*"
+          ],
+          var.use_legacy_executor ? [] : [
+            aws_s3_bucket.registry[0].arn,
+            "${aws_s3_bucket.registry[0].arn}/*"
+          ]
+        )
       }
     ]
   })
